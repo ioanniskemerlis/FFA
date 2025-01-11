@@ -1,28 +1,23 @@
 package gr.aueb.cf.ffa.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "incomes")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Income {
     @Id
     private String id;
-    private String userId;
-    private String source;
-    private double amount;
-    private LocalDate date;
-    private String category;
-    private String notes;
-
-    // Getters and setters
+    private String userId; // To associate income with a specific user
+    private String type; // Income type (e.g., "Gross Pay",Net pay , "Tips")
+    private double amount; // Income amount
+    private LocalDate date; // Date of the income
+    private String notes; // Optional notes
 }

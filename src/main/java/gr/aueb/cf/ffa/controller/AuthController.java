@@ -38,6 +38,9 @@ public class AuthController {
             throw new RuntimeException("Username already exists!");
         }
 
+        // Set default role
+        user.setRole("USER");
+
         // Hash the password and save the user
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

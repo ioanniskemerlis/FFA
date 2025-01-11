@@ -43,13 +43,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(org.springframework.security.config.annotation.web.builders.HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF as JWT provides its own protection
+                .csrf(csrf -> csrf.disable()) // Disable CSRF for JWT-based authentication
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Allow unauthenticated access to login and registration
+                        .requestMatchers("/api/auth/**").permitAll() // Allow login and registration
+                        .requestMatchers("/api/incomes/**").authenticated() // Require authentication for incomes
                         .anyRequest().authenticated() // All other endpoints require authentication
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add the JWT filter
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
 
         return http.build();
     }
