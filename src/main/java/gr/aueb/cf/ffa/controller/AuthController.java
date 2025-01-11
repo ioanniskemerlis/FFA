@@ -23,6 +23,28 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+
+    /**
+     * Registers a new user.
+     *
+     * @param user The user details.
+     * @return A success message.
+     */
+    @PostMapping("/register")
+    public String register(@RequestBody User user) {
+        // Check if username already exists
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+        if (existingUser.isPresent()) {
+            throw new RuntimeException("Username already exists!");
+        }
+
+        // Hash the password and save the user
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+
+        return "User registered successfully!";
+    }
+
     /**
      * Handles user login and issues a JWT token.
      *
