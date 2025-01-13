@@ -5,9 +5,13 @@ import gr.aueb.cf.ffa.model.User;
 import gr.aueb.cf.ffa.repository.UserRepository;
 import gr.aueb.cf.ffa.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -31,21 +35,22 @@ public class AuthController {
      * @return A success message.
      */
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        // Check if username already exists
-        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
-        if (existingUser.isPresent()) {
+    public ResponseEntity<?> register(@RequestBody User user) {
+        // Registration logic
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new RuntimeException("Username already exists!");
         }
 
-        // Set default role
         user.setRole("USER");
-
-        // Hash the password and save the user
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
-        return "User registered successfully!";
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User registered successfully!");
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON) // Set Content-Type to JSON
+                .body(response); // Return response as JSON
     }
 
     /**
@@ -55,11 +60,17 @@ public class AuthController {
      * @return A JWT token if authentication is successful.
      */
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user) {
         Optional<User> foundUser = userRepository.findByUsername(user.getUsername());
 
         if (foundUser.isPresent() && passwordEncoder.matches(user.getPassword(), foundUser.get().getPassword())) {
-            return jwtUtil.generateToken(user.getUsername());
+            String token = jwtUtil.generateToken(user.getUsername());
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON) // Explicitly set the content type
+                    .body(response); // Return the token in JSON format
         } else {
             throw new RuntimeException("Invalid username or password");
         }
