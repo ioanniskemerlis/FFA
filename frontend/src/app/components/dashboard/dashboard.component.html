@@ -1,1 +1,78 @@
-<p>dashboard works!</p>
+<!-- Navigation Bar -->
+<mat-toolbar color="primary" class="navbar">
+  <!-- FFA on the left -->
+  <span class="navbar-title">FFA</span>
+
+  <!-- Welcome message and logout button on the right -->
+  <div class="navbar-right">
+    <span class="navbar-welcome">Welcome {{ username }}</span>
+    <button mat-raised-button color="accent" class="logout-button" (click)="logout()">Logout</button>
+  </div>
+</mat-toolbar>
+
+<!-- Dashboard Wrapper -->
+<div class="dashboard-wrapper">
+  <!-- Income Card -->
+  <div class="income-container">
+    <mat-card class="dashboard-card">
+      <h3>Incomes</h3>
+      <p>Total: <span class="income-amount">€{{ totalIncome | number: '1.2-2' }}</span></p>
+      <button mat-raised-button color="accent" (click)="navigateToIncomes()">Add Income</button>
+      <h4>Transactions</h4>
+      <ul class="transaction-list">
+        <li *ngFor="let income of paginatedIncomes">
+          {{ income.type }} - 
+          <span class="income-amount">€{{ income.amount | number: '1.2-2' }}</span> 
+          on {{ income.date | date: 'mediumDate' }}
+        </li>
+      </ul>
+      <mat-paginator
+        [length]="incomesLength"
+        [pageSize]="10"
+        [hidePageSize]="true"
+        (page)="onIncomePageChange($event)">
+      </mat-paginator>
+    </mat-card>
+  </div>
+
+  <!-- Net Profit and Pie Chart -->
+  <div class="net-profit-container">
+    <div class="net-profit">
+      <h3>Net Profit</h3>
+      <p [ngClass]="{ 'negative-profit': netProfit < 0 }">
+        €{{ netProfit | number: '1.2-2' }}
+      </p>
+    </div>
+    <div class="pie-chart-container">
+      <canvas
+        baseChart
+        [data]="pieChartData"
+        [options]="pieChartOptions"
+        [type]="pieChartType">
+      </canvas>
+    </div>
+  </div>
+
+  <!-- Expense Card -->
+  <div class="expense-container">
+    <mat-card class="dashboard-card">
+      <h3>Expenses</h3>
+      <p>Total: <span class="expense-amount">€{{ totalExpenses | number: '1.2-2' }}</span></p>
+      <button mat-raised-button color="warn" (click)="navigateToExpenses()">Add Expense</button>
+      <h4>Transactions</h4>
+      <ul class="transaction-list">
+        <li *ngFor="let expense of paginatedExpenses">
+          {{ expense.type }} - 
+          <span class="expense-amount">€{{ expense.amount | number: '1.2-2' }}</span> 
+          on {{ expense.date | date: 'mediumDate' }}
+        </li>
+      </ul>
+      <mat-paginator
+        [length]="expensesLength"
+        [pageSize]="10"
+        [hidePageSize]="true"
+        (page)="onExpensePageChange($event)">
+      </mat-paginator>
+    </mat-card>
+  </div>
+</div>

@@ -2,13 +2,24 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [ FormsModule ],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+    selector: 'app-register',
+    imports: [
+        FormsModule,
+        MatToolbarModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+    ],
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
   registerData = { username: '', email: '', password: '' };
@@ -27,5 +38,8 @@ export class RegisterComponent {
         alert('Registration failed! Please try again.');
       },
     });
+  }
+  navigateToLogin() {
+    this.router.navigate(['/auth']); // Redirect to the login page
   }
 }

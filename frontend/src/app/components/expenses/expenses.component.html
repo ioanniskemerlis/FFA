@@ -1,1 +1,63 @@
-<p>expenses works!</p>
+<!-- Navigation Bar -->
+<mat-toolbar color="primary" class="navbar">
+  <!-- FFA on the left -->
+  <span class="navbar-title">FFA</span>
+
+  <!-- Welcome message and logout button on the right -->
+  <div class="navbar-right">
+    <span class="navbar-welcome">Welcome {{ username }}</span>
+    <button mat-raised-button color="accent" class="logout-button" (click)="logout()">Logout</button>
+  </div>
+</mat-toolbar>
+
+<!-- Expenses Form and List Container -->
+<div class="expenses-container">
+  <!-- Add Expense Form -->
+  <mat-card class="expense-card">
+    <form (ngSubmit)="addExpense()" class="expense-form">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Type</mat-label>
+        <mat-select [(ngModel)]="newExpense.type" name="type" required>
+          <mat-option *ngFor="let type of expenseTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" [(ngModel)]="newExpense.amount" name="amount" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Date</mat-label>
+        <input matInput type="date" [(ngModel)]="newExpense.date" name="date" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Notes</mat-label>
+        <textarea matInput [(ngModel)]="newExpense.notes" name="notes"></textarea>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" class="add-expense-button" type="submit">
+        Add Expense
+      </button>
+    </form>
+  </mat-card>
+
+  <!-- List of Expenses -->
+  <mat-card class="expense-list-card">
+    <h3>Your Expenses</h3>
+    <ul class="expense-list">
+      <li *ngFor="let expense of expenses" class="expense-item">
+        <div>
+          <strong>{{ expense.type }}</strong> - ${{ expense.amount | number: '1.2-2' }}
+          on {{ expense.date | date: 'mediumDate' }}
+          <p>{{ expense.notes }}</p>
+        </div>
+        <button mat-button color="warn" (click)="deleteExpense(expense.id)">Delete</button>
+      </li>
+    </ul>
+  </mat-card>
+</div>

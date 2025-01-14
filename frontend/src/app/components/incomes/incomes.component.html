@@ -1,1 +1,65 @@
-<p>incomes works!</p>
+<!-- Navigation Bar -->
+<mat-toolbar color="primary" class="navbar">
+  <!-- FFA on the left -->
+  <span class="navbar-title">FFA</span>
+  
+    <button mat-raised-button color="accent" class="dashboard-button" (click)="dashboard()">Dashboard</button>
+  
+  <!-- Welcome message and logout button on the right -->
+  <div class="navbar-right">
+    <span class="navbar-welcome">Welcome {{ username }}</span>
+    <button mat-raised-button color="accent" class="logout-button" (click)="logout()">Logout</button>
+  </div>
+</mat-toolbar>
+
+<!-- Incomes Form and List Container -->
+<div class="incomes-container">
+  <!-- Add Income Form -->
+  <mat-card class="income-card">
+    <form (ngSubmit)="addIncome()" class="income-form">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Type</mat-label>
+        <mat-select [(ngModel)]="newIncome.type" name="type" required>
+          <mat-option *ngFor="let type of incomeTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" [(ngModel)]="newIncome.amount" name="amount" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Date</mat-label>
+        <input matInput type="date" [(ngModel)]="newIncome.date" name="date" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Notes</mat-label>
+        <textarea matInput [(ngModel)]="newIncome.notes" name="notes"></textarea>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" class="add-income-button" type="submit">
+        Add Income
+      </button>
+    </form>
+  </mat-card>
+
+  <!-- List of Incomes -->
+  <mat-card class="income-list-card">
+    <h3>Your Incomes</h3>
+    <ul class="income-list">
+      <li *ngFor="let income of incomes" class="income-item">
+        <div>
+          <strong>{{ income.type }}</strong> - ${{ income.amount | number: '1.2-2' }}
+          on {{ income.date | date: 'mediumDate' }}
+          <p>{{ income.notes }}</p>
+        </div>
+        <button mat-button color="warn" (click)="deleteIncome(income.id)">Delete</button>
+      </li>
+    </ul>
+  </mat-card>
+</div>

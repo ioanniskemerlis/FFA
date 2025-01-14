@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/incomes")
+@CrossOrigin(origins = "http://localhost:4200") // Allow Angular frontend
 public class IncomeController {
 
     @Autowired

@@ -1,0 +1,93 @@
+/* Wrapper for the entire dashboard */
+.dashboard-wrapper {
+  display: flex;
+  justify-content: space-around; /* Distribute space evenly */
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between items */
+  margin: 20px;
+}
+
+/* Income Card */
+.income-container {
+  flex: 1; /* Take up equal space */
+  max-width: 300px; /* Optional: Restrict maximum width */
+}
+
+/* Expense Card */
+.expense-container {
+  flex: 1; /* Take up equal space */
+  max-width: 300px; /* Optional: Restrict maximum width */
+}
+
+/* Net Profit Section */
+.net-profit-container {
+  display: flex;
+  flex-direction: column; /* Stack Net Profit and Pie Chart vertically */
+  align-items: center; /* Center horizontally */
+  flex: 2; /* Take up more space than the cards */
+  max-width: 400px; /* Optional: Restrict maximum width */
+
+  .net-profit {
+    text-align: center;
+
+    h3 {
+      font-size: 2rem;
+      color: #1e88e5; /* Primary blue */
+    }
+
+    p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #388e3c; /* Green for positive profits */
+
+      &.negative-profit {
+        color: #f44336; /* Red for negative profits */
+      }
+    }
+  }
+
+  .pie-chart-container {
+    margin-top: 20px;
+    canvas {
+      max-width: 300px; /* Adjust chart size */
+      width: 100%;
+    }
+  }
+}
+
+/* General Card Styling */
+.dashboard-card {
+  padding: 20px;
+  background-color: #e3f2fd; /* Light blue */
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Navigation Bar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+
+  .navbar-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+  }
+
+  .navbar-welcome {
+    font-size: 1.4rem;
+    color: white;
+    margin-right: 40px;
+    margin-left: 20px;
+  }
+
+  .logout-button {
+
+    color: white;
+    font-size: 1rem;
+  }
+}
