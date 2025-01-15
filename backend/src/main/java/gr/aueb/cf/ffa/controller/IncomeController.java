@@ -40,4 +40,10 @@ public class IncomeController {
         String authenticatedUserId = authentication.getName();
         return incomeService.getIncomesByUser(authenticatedUserId, page, size);
     }
+
+    @GetMapping("/all")
+    public List<Income> getAllIncomes(Authentication authentication) {
+        String authenticatedUserId = authentication.getName();
+        return incomeService.getAllIncomesByUser(authenticatedUserId);
+    }
 }

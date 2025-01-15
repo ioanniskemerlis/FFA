@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class IncomeService {
@@ -64,5 +66,9 @@ public class IncomeService {
      */
     public void deleteIncome(String id) {
         incomeRepository.deleteById(id);
+    }
+
+    public List<Income> getAllIncomesByUser(String userId) {
+        return incomeRepository.findAllIncomeByUserId(userId);
     }
 }

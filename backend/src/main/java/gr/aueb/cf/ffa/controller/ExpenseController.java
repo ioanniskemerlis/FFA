@@ -42,4 +42,10 @@ public class ExpenseController {
     public void deleteExpense(@PathVariable String id) {
         expenseService.deleteExpense(id);
     }
+
+    @GetMapping("/all")
+    public List<Expense> getAllExpenses(Authentication authentication) {
+        String authenticatedUserId = authentication.getName();
+        return expenseService.getAllExpensesByUser(authenticatedUserId);
+    }
 }

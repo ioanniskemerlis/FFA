@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExpenseService {
 
@@ -41,4 +43,10 @@ public class ExpenseService {
     public void deleteExpense(String id) {
         expenseRepository.deleteById(id);
     }
+
+    public List<Expense> getAllExpensesByUser(String userId) {
+        return ExpenseRepository.findAllExpensesByUserId(userId);
+    }
 }
+
+
