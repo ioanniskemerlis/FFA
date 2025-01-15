@@ -7,23 +7,53 @@
 <div class="login-container">
   <mat-card class="login-card">
     <form (ngSubmit)="onLogin()" class="login-form">
+      <!-- Username Field -->
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Username</mat-label>
-        <input matInput type="text" [(ngModel)]="loginData.username" name="username" required />
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="loginData.username"
+          name="username"
+          required
+        />
       </mat-form-field>
 
+      <!-- Password Field -->
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Password</mat-label>
-        <input matInput type="password" [(ngModel)]="loginData.password" name="password" required />
+        <input
+          matInput
+          type="password"
+          [(ngModel)]="loginData.password"
+          name="password"
+          required
+        />
       </mat-form-field>
 
-      <button mat-raised-button color="accent" class="login-button" type="submit">Login</button>
+      <!-- Login Button -->
+      <button
+        mat-raised-button
+        color="accent"
+        class="login-button"
+        type="submit"
+        [disabled]="!loginData.username || !loginData.password"
+      >
+        Login
+      </button>
     </form>
   </mat-card>
 
   <!-- Register Redirect -->
   <div class="register-container">
     <span>Don't have an Account yet? </span>
-    <button mat-button color="primary" class="register-link" (click)="navigateToRegister()"> Register Here</button>
+    <button
+      mat-button
+      color="primary"
+      class="register-link"
+      (click)="navigateToRegister()"
+    >
+      Register Here
+    </button>
   </div>
 </div>

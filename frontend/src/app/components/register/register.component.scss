@@ -1,70 +1,78 @@
 /* Navigation Bar */
 .navbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60px;
-  
-    .navbar-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: white;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  background-color: #1e88e5; /* Primary blue */
+  color: white;
+
+  .navbar-title {
+    font-size: 3rem;
+    font-weight: bold;
+    font-style: italic;
   }
-  
-  /* Register Form Styling */
-  .register-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: calc(100vh - 60px); /* Full height minus navbar */
-    background-color: #f9f9f9;
+}
+
+/* Register Form Styling */
+.register-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 60px); /* Full height minus navbar */
+  background-color: #f9f9f9;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #e3f2fd; /* Light blue */
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.error-message {
+  color: #f44336; /* Red color */
+  font-size: 0.9rem;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+
+  .form-field {
+    margin-bottom: 20px;
   }
-  
-  .register-card {
+
+  .register-button {
+    align-self: center;
     width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    background-color: #e3f2fd; /* Light blue */
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .register-form {
-    display: flex;
-    flex-direction: column;
-  
-    .form-field {
-      margin-bottom: 20px;
-    }
-  
-    .register-button {
-      align-self: center;
-      width: 100%;
-      background-color: #1e88e5; /* Primary blue */
-      color: white;
-  
-      &:hover {
-        background-color: #1565c0; /* Darker blue */
-      }
+    background-color: #1e88e5; /* Primary blue */
+    color: white;
+
+    &:hover {
+      background-color: #1565c0; /* Darker blue */
     }
   }
-  
-  .login-redirect {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 1.2rem; /* Larger font size */
-    font-weight: normal; /* Not bold */
-  
-    .login-link {
-      text-transform: none;
-      font-weight: bold;
-      color: #db54a3; /* Pink color */
-  
-      &:hover {
-        color: #ad1457; /* Darker pink */
-      }
+}
+
+.login-redirect {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1.2rem; /* Larger font size */
+  font-weight: normal; /* Not bold */
+
+  .login-link {
+    text-transform: none;
+    font-weight: bold;
+    color: #db54a3; /* Pink color */
+
+    &:hover {
+      color: #ad1457; /* Darker pink */
     }
   }
-  
+}

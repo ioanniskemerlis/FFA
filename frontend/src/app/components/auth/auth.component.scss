@@ -6,8 +6,9 @@
     height: 60px;
   
     .navbar-title {
-      font-size: 1.5rem;
+      font-size: 3rem;
       font-weight: bold;
+      font-style: italic;
       color: white;
     }
   }
@@ -44,10 +45,17 @@
       width: 100%;
       background-color: #1e88e5; /* Primary blue */
       color: white;
+     
+      
   
       &:hover {
         background-color: #1565c0; /* Darker blue */
       }
+    }
+    button[disabled], .mat-raised-button[disabled] {
+      cursor: not-allowed !important; /* Force "not-allowed" cursor */
+      box-shadow: none; /* Remove shadow for a flat look */
+      pointer-events: auto; /* Ensure the cursor style applies correctly */
     }
   }
   

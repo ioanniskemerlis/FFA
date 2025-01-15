@@ -1,34 +1,65 @@
-<!-- Navigation Bar -->
+<!-- Navbar -->
 <mat-toolbar color="primary" class="navbar">
   <span class="navbar-title">FFA</span>
 </mat-toolbar>
 
-<!-- Register Form Container -->
+<!-- Registration Form -->
 <div class="register-container">
   <mat-card class="register-card">
-    <form (ngSubmit)="onRegister()" class="register-form">
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="register-form">
+      <!-- Username -->
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Username</mat-label>
-        <input matInput type="text" [(ngModel)]="registerData.username" name="username" required />
+        <input matInput formControlName="username" placeholder="Enter your username" />
+        <mat-error *ngIf="registerForm.get('username')?.hasError('required')">
+          Username is required.
+        </mat-error>
+        <mat-error *ngIf="registerForm.get('username')?.hasError('pattern')">
+          Username must be 5-20 characters, alphanumeric, and can include underscores.
+        </mat-error>
+        <!-- Display backend error -->
+    <p *ngIf="backendError" class="error-message">{{ backendError }}</p>
       </mat-form-field>
 
+      <!-- Email -->
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Email</mat-label>
-        <input matInput type="email" [(ngModel)]="registerData.email" name="email" required />
+        <input matInput type="email" formControlName="email" placeholder="Enter your email" />
+        <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+          Email is required.
+        </mat-error>
+        <mat-error *ngIf="registerForm.get('email')?.hasError('pattern')">
+          Please enter a valid email address.
+        </mat-error>
       </mat-form-field>
 
+      <!-- Password -->
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Password</mat-label>
-        <input matInput type="password" [(ngModel)]="registerData.password" name="password" required />
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+        <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+          Password is required.
+        </mat-error>
+        <mat-error *ngIf="registerForm.get('password')?.hasError('pattern')">
+          Password must be at least 8 characters long and include 1 uppercase, 1 lowercase, 1 number, and 1 special character.
+        </mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="accent" class="register-button" type="submit">Register</button>
+      <!-- Submit Button -->
+      <button mat-raised-button color="primary" type="submit" class="register-button" [disabled]="registerForm.invalid">
+        Register
+      </button>
     </form>
-  </mat-card>
 
-  <!-- Login Redirect -->
-  <div class="login-redirect">
-    <span>Already have an account?</span>
-    <button mat-button color="primary" class="login-link" (click)="navigateToLogin()">Login here</button>
-  </div>
+    <!-- Login Redirect -->
+    <p class="login-redirect">
+      Already have an account?
+      <button mat-button color="accent" (click)="navigateToLogin()" class="login-link">Login Here</button>
+    </p>
+  </mat-card>
 </div>

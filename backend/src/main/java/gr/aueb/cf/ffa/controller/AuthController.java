@@ -1,10 +1,10 @@
 package gr.aueb.cf.ffa.controller;
 
-
 import gr.aueb.cf.ffa.model.User;
 import gr.aueb.cf.ffa.repository.UserRepository;
 import gr.aueb.cf.ffa.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,30 +27,34 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-
     /**
      * Registers a new user.
      *
      * @param user The user details.
-     * @return A success message.
+     * @return A success message or an error message if the username already exists.
      */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
-        // Registration logic
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new RuntimeException("Username already exists!");
+            // Return a custom error message with a 400 Bad Request status
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Username already exists!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errorResponse);
         }
 
+        // Proceed with registration
         user.setRole("USER");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "User registered successfully!");
-
+        // Return success response
+        Map<String, String> successResponse = new HashMap<>();
+        successResponse.put("message", "User registered successfully!");
         return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON) // Set Content-Type to JSON
-                .body(response); // Return response as JSON
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(successResponse);
     }
 
     /**
@@ -72,7 +76,12 @@ public class AuthController {
                     .contentType(MediaType.APPLICATION_JSON) // Explicitly set the content type
                     .body(response); // Return the token in JSON format
         } else {
-            throw new RuntimeException("Invalid username or password");
+            // Return error response for invalid login
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errorResponse);
         }
     }
 
