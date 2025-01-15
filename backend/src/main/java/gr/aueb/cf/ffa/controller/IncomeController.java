@@ -3,6 +3,7 @@ package gr.aueb.cf.ffa.controller;
 import gr.aueb.cf.ffa.model.Income;
 import gr.aueb.cf.ffa.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +32,12 @@ public class IncomeController {
     }
 
     @GetMapping
-    public List<Income> getIncomes(Authentication authentication) {
-        String username = authentication.getName();
-        System.out.println("Fetching incomes for userId (username): " + username);
-
-        return incomeService.getIncomesByUser(username);
+    public Page<Income> getIncomes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Authentication authentication
+    ) {
+        String authenticatedUserId = authentication.getName();
+        return incomeService.getIncomesByUser(authenticatedUserId, page, size);
     }
 }

@@ -11,57 +11,68 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
-    selector: 'app-incomes',
-    standalone: true,
-    imports: [
-        CommonModule,
-        MatToolbarModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule, // Import MatInputModule
-        MatButtonModule,
-        FormsModule,
-        MatOptionModule,
-        MatSelectModule
-    ],
-    templateUrl: './incomes.component.html',
-    styleUrls: ['./incomes.component.scss']
+  selector: 'app-incomes',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatPaginatorModule,
+  ],
+  templateUrl: './incomes.component.html',
+  styleUrls: ['./incomes.component.scss'],
 })
 export class IncomesComponent implements OnInit {
   incomes: any[] = [];
   newIncome = { type: '', amount: 0, date: '', notes: '' };
-  username: string = ''; // Define the username property
-  incomeTypes: string[];
+  username: string = '';
+  incomeTypes: string[] = ['Daily Wage', 'Tips', 'Monthly Salary'];
 
-  constructor(private incomeService: IncomeService,
-    private router: Router,
-    
-  ) {this.incomeTypes = ['Daily Wage', 'Tips', 'Monthly Salary'];}
+  // Pagination properties
+  totalElements = 0;
+  pageSize = 10;
+  pageIndex = 0;
 
+  constructor(private incomeService: IncomeService, private router: Router) {}
 
-  
   ngOnInit(): void {
-    this.loadIncomes();
     this.getUsernameFromToken();
+    this.loadIncomes(this.pageIndex, this.pageSize);
   }
 
   getUsernameFromToken() {
-      const token = localStorage.getItem('token'); // Retrieve token from localStorage
-      if (token) {
-        const decodedToken: any = jwtDecode(token); // Decode the token
-        this.username = decodedToken?.sub || 'User'; // Extract the username (usually in `sub` claim)
-      } else {
-        this.router.navigate(['/auth']); // Redirect to login if no token is found
-      }
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      this.username = decodedToken?.sub || 'User';
+    } else {
+      this.router.navigate(['/auth']);
     }
+  }
 
-  loadIncomes() {
-    this.incomeService.getIncomes().subscribe({
-      next: (data) => (this.incomes = data),
+  loadIncomes(page: number, size: number) {
+    this.incomeService.getIncomes(page, size).subscribe({
+      next: (response) => {
+        this.incomes = response.content; // Paginated data
+        this.totalElements = response.totalElements; // Total entries count
+      },
       error: (error) => console.error('Error loading incomes:', error),
     });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadIncomes(this.pageIndex, this.pageSize);
   }
 
   addIncome() {
@@ -69,7 +80,7 @@ export class IncomesComponent implements OnInit {
       next: () => {
         alert('Income added successfully!');
         this.newIncome = { type: '', amount: 0, date: '', notes: '' };
-        this.loadIncomes();
+        this.loadIncomes(this.pageIndex, this.pageSize);
       },
       error: (error) => console.error('Error adding income:', error),
     });
@@ -79,17 +90,18 @@ export class IncomesComponent implements OnInit {
     this.incomeService.deleteIncome(id).subscribe({
       next: () => {
         alert('Income deleted successfully!');
-        this.loadIncomes();
+        this.loadIncomes(this.pageIndex, this.pageSize);
       },
       error: (error) => console.error('Error deleting income:', error),
     });
   }
+
   logout() {
-    localStorage.removeItem('token'); // Clear the token
-    this.router.navigate(['/auth']); // Redirect to login page
+    localStorage.removeItem('token');
+    this.router.navigate(['/auth']);
   }
 
-  dashboard(){
+  dashboard() {
     this.router.navigate(['/dashboard']);
   }
 }

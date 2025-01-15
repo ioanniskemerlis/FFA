@@ -1,12 +1,17 @@
 package gr.aueb.cf.ffa.repository;
 
-
 import gr.aueb.cf.ffa.model.Income;
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IncomeRepository extends MongoRepository<Income, String> {
-    // Fetch all incomes for a specific user
-    List<Income> findByUserId(String userId);
+    /**
+     * Fetch all incomes for a specific user with pagination.
+     *
+     * @param userId   The ID of the user.
+     * @param pageable The pagination details (page number and size).
+     * @return A Page of Income objects.
+     */
+    Page<Income> findByUserId(String userId, Pageable pageable);
 }

@@ -3,6 +3,8 @@ package gr.aueb.cf.ffa.controller;
 import gr.aueb.cf.ffa.model.Expense;
 import gr.aueb.cf.ffa.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +23,14 @@ public class ExpenseController {
         return expenseService.addExpense(expense);
     }
 
+    // Updated to include pagination
     @GetMapping
-    public List<Expense> getExpenses(Authentication authentication) {
-        return expenseService.getExpensesByUser(authentication.getName());
+    public ResponseEntity<Page<Expense>> getExpenses(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Authentication authentication) {
+        Page<Expense> expenses = expenseService.getExpensesByUser(authentication.getName(), page, size);
+        return ResponseEntity.ok(expenses);
     }
 
     @PutMapping("/{id}")

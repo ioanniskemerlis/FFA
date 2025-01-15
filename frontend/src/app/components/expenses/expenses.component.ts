@@ -11,33 +11,31 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
-    selector: 'app-expenses',
-    standalone: true,
-    imports: [
-        CommonModule,
-        MatToolbarModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule, // Import MatInputModule
-        MatButtonModule,
-        FormsModule,
-        MatOptionModule,
-        MatSelectModule
-    ],
-    templateUrl: './expenses.component.html',
-    styleUrls: ['./expenses.component.scss']
+  selector: 'app-expenses',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatPaginatorModule,
+  ],
+  templateUrl: './expenses.component.html',
+  styleUrls: ['./expenses.component.scss'],
 })
 export class ExpensesComponent implements OnInit {
   expenses: any[] = [];
   newExpense = { type: '', amount: 0, date: '', notes: '' };
   username: string = ''; // Define the username property
-  expenseTypes: string[];
-
-  constructor(private expenseService: ExpenseService,
-    private router: Router
-  ) {this.expenseTypes = [
+  expenseTypes: string[] = [
     'Tax',
     'Fuel',
     'Personal Expenses',
@@ -46,28 +44,44 @@ export class ExpensesComponent implements OnInit {
     'Insurance',
     'KTEO',
     'Road Stamp',
-  ];}
+  ];
+
+  // Pagination properties
+  totalElements = 0;
+  pageSize = 10;
+  pageIndex = 0;
+
+  constructor(private expenseService: ExpenseService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadExpenses();
     this.getUsernameFromToken();
+    this.loadExpenses(this.pageIndex, this.pageSize);
   }
 
   getUsernameFromToken() {
-      const token = localStorage.getItem('token'); // Retrieve token from localStorage
-      if (token) {
-        const decodedToken: any = jwtDecode(token); // Decode the token
-        this.username = decodedToken?.sub || 'User'; // Extract the username (usually in `sub` claim)
-      } else {
-        this.router.navigate(['/auth']); // Redirect to login if no token is found
-      }
+    const token = localStorage.getItem('token'); // Retrieve token from localStorage
+    if (token) {
+      const decodedToken: any = jwtDecode(token); // Decode the token
+      this.username = decodedToken?.sub || 'User'; // Extract the username (usually in `sub` claim)
+    } else {
+      this.router.navigate(['/auth']); // Redirect to login if no token is found
     }
+  }
 
-  loadExpenses() {
-    this.expenseService.getExpenses().subscribe({
-      next: (data) => (this.expenses = data),
+  loadExpenses(page: number, size: number) {
+    this.expenseService.getExpenses(page, size).subscribe({
+      next: (response) => {
+        this.expenses = response.content; // Paginated data
+        this.totalElements = response.totalElements; // Total number of entries
+      },
       error: (error) => console.error('Error loading expenses:', error),
     });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadExpenses(this.pageIndex, this.pageSize);
   }
 
   addExpense() {
@@ -75,7 +89,7 @@ export class ExpensesComponent implements OnInit {
       next: () => {
         alert('Expense added successfully!');
         this.newExpense = { type: '', amount: 0, date: '', notes: '' };
-        this.loadExpenses();
+        this.loadExpenses(this.pageIndex, this.pageSize);
       },
       error: (error) => console.error('Error adding expense:', error),
     });
@@ -85,13 +99,18 @@ export class ExpensesComponent implements OnInit {
     this.expenseService.deleteExpense(id).subscribe({
       next: () => {
         alert('Expense deleted successfully!');
-        this.loadExpenses();
+        this.loadExpenses(this.pageIndex, this.pageSize);
       },
       error: (error) => console.error('Error deleting expense:', error),
     });
   }
+
   logout() {
     localStorage.removeItem('token'); // Clear the token
     this.router.navigate(['/auth']); // Redirect to login page
+  }
+
+  dashboard() {
+    this.router.navigate(['/dashboard']);
   }
 }

@@ -17,8 +17,12 @@ export class ExpenseService {
     });
   }
 
-  getExpenses(): Observable<any> {
-    return this.http.get(this.apiUrl, { headers: this.getAuthHeaders() });
+  getExpenses(page: number, size: number): Observable<any> {
+    const params = { page: page.toString(), size: size.toString() };
+    return this.http.get(this.apiUrl, {
+      headers: this.getAuthHeaders(),
+      params: params,
+    });
   }
 
   addExpense(expense: any): Observable<any> {

@@ -3,9 +3,10 @@ package gr.aueb.cf.ffa.service;
 import gr.aueb.cf.ffa.model.Expense;
 import gr.aueb.cf.ffa.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ExpenseService {
@@ -21,8 +22,10 @@ public class ExpenseService {
         return expenseRepository.save(expense);
     }
 
-    public List<Expense> getExpensesByUser(String userId) {
-        return expenseRepository.findByUserId(userId);
+    // Updated Service Layer
+    public Page<Expense> getExpensesByUser(String userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return expenseRepository.findByUserId(userId, pageable);
     }
 
     public Expense updateExpense(String id, Expense updatedExpense) {

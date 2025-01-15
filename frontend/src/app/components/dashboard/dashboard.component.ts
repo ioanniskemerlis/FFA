@@ -1,46 +1,38 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IncomeService } from '../../services/income.service';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { ExpenseService } from '../../services/expense.service';
+import { Router } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { jwtDecode } from 'jwt-decode';
 import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 // Import required Chart.js modules
-import {
-  Chart,
-  ArcElement,
-  Tooltip,
-  Legend,
-  PieController,
-} from 'chart.js';
+import { Chart, ArcElement, Tooltip, Legend, PieController } from 'chart.js';
+import { CommonModule } from '@angular/common';
+import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
-// Register the required modules
 Chart.register(PieController, ArcElement, Tooltip, Legend);
 
 @Component({
-    selector: 'app-dashboard',
-    standalone: true,
-    imports: [
-        CommonModule,
-        MatToolbarModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule, // Import MatInputModule
-        MatButtonModule,
-        FormsModule,
-        MatPaginatorModule,
-        BaseChartDirective
-        ],
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss']
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [MatPaginatorModule,
+    BaseChartDirective,
+    CommonModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    FormsModule,
+      ],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
@@ -49,12 +41,16 @@ export class DashboardComponent implements OnInit {
   netProfit = 0;
   incomes: any[] = [];
   expenses: any[] = [];
-  paginatedIncomes: any[] = [];
-  paginatedExpenses: any[] = [];
-  pageSize = 10;
-  incomesLength = 0; // Total number of income entries
-  expensesLength = 0; // Total number of expense entries
-  username: string = ''; // Define the username property
+  username: string = '';
+
+  // Pagination properties for incomes and expenses
+  incomePageIndex = 0;
+  incomePageSize = 10;
+  incomeTotalItems = 0;
+
+  expensePageIndex = 0;
+  expensePageSize = 10;
+  expenseTotalItems = 0;
 
   // Chart Data
   public pieChartLabels: string[] = ['Incomes', 'Expenses'];
@@ -65,26 +61,13 @@ export class DashboardComponent implements OnInit {
         data: [0, 0], // Default data
         backgroundColor: ['#4CAF50', '#F44336'], // Green and Red
         hoverBackgroundColor: ['#66BB6A', '#EF5350'], // Hover colors
-        borderColor: ['#FFFFFF', '#FFFFFF'], // Border color for slices
-        borderWidth: 2, // Border width for slices
-        hidden: false, // Ensure the dataset is visible by default
       },
     ],
   };
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     plugins: {
-      legend: {
-        position: 'top',
-      },
-      tooltip: {
-        callbacks: {
-          label: (tooltipItem) => {
-            const value = tooltipItem.raw as number; // Extract raw value
-            return `€${value.toFixed(2)}`; // Format value with euro sign
-          },
-        },
-      },
+      legend: { position: 'top' },
     },
   };
   public pieChartType: 'pie' = 'pie';
@@ -96,72 +79,73 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadIncomes();
-    this.loadExpenses();
     this.getUsernameFromToken();
-    this.calculateNetProfit();
+    this.loadIncomes(this.incomePageIndex, this.incomePageSize);
+    this.loadExpenses(this.expensePageIndex, this.expensePageSize);
+    
   }
 
   getUsernameFromToken() {
-    const token = localStorage.getItem('token'); // Retrieve token from localStorage
+    const token = localStorage.getItem('token');
     if (token) {
-      const decodedToken: any = jwtDecode(token); // Decode the token
-      this.username = decodedToken?.sub || 'User'; // Extract the username (usually in `sub` claim)
+      const decodedToken: any = jwtDecode(token);
+      this.username = decodedToken?.sub || 'User';
     } else {
-      this.router.navigate(['/auth']); // Redirect to login if no token is found
+      this.router.navigate(['/auth']);
     }
   }
 
-  loadIncomes() {
-    this.incomeService.getIncomes().subscribe({
-      next: (incomes) => {
-        this.incomes = incomes.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        this.incomesLength = this.incomes.length; // Set the total length for paginator
-        this.totalIncome = this.incomes.reduce((sum: number, income: any) => sum + income.amount, 0);
-        this.updatePaginatedIncomes(0, this.pageSize);
-        this.calculateNetProfit();
+  loadIncomes(page: number, size: number) {
+    this.incomeService.getIncomes(page, size).subscribe({
+      next: (response) => {
+        this.incomes = response.content;
+        this.incomeTotalItems = response.totalElements;
+        this.totalIncome = this.incomes.reduce(
+          (sum: number, income: any) => sum + income.amount,
+          0
+        );
+        this.updateNetProfit();
         this.updateChartData();
       },
       error: (err) => console.error('Error loading incomes:', err),
     });
   }
-  
-  loadExpenses() {
-    this.expenseService.getExpenses().subscribe({
-      next: (expenses) => {
-        this.expenses = expenses.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        this.expensesLength = this.expenses.length; // Set the total length for paginator
-        this.totalExpenses = this.expenses.reduce((sum: number, expense: any) => sum + expense.amount, 0);
-        this.updatePaginatedExpenses(0, this.pageSize);
-        this.calculateNetProfit();
+
+  loadExpenses(page: number, size: number) {
+    this.expenseService.getExpenses(page, size).subscribe({
+      next: (response) => {
+        this.expenses = response.content;
+        this.expenseTotalItems = response.totalElements;
+        this.totalExpenses = this.expenses.reduce(
+          (sum: number, expense: any) => sum + expense.amount,
+          0
+        );
+        this.updateNetProfit();
         this.updateChartData();
       },
       error: (err) => console.error('Error loading expenses:', err),
     });
   }
 
-  updatePaginatedIncomes(startIndex: number, endIndex: number) {
-    this.paginatedIncomes = this.incomes.slice(startIndex, endIndex);
-  }
-
-  updatePaginatedExpenses(startIndex: number, endIndex: number) {
-    this.paginatedExpenses = this.expenses.slice(startIndex, endIndex);
-  }
-
-  onIncomePageChange(event: PageEvent) {
-    const startIndex = event.pageIndex * event.pageSize;
-    const endIndex = startIndex + event.pageSize;
-    this.updatePaginatedIncomes(startIndex, endIndex);
-  }
-  
-  onExpensePageChange(event: PageEvent) {
-    const startIndex = event.pageIndex * event.pageSize;
-    const endIndex = startIndex + event.pageSize;
-    this.updatePaginatedExpenses(startIndex, endIndex);
-  }
-
-  calculateNetProfit() {
+  updateNetProfit() {
     this.netProfit = this.totalIncome - this.totalExpenses;
+  }
+
+  updateChartData() {
+    this.pieChartData.datasets[0].data = [this.totalIncome, this.totalExpenses];
+    this.chart?.update();
+  }
+
+  onIncomePageChange(event: any): void {
+    this.incomePageIndex = event.pageIndex;
+    this.incomePageSize = event.pageSize;
+    this.loadIncomes(this.incomePageIndex, this.incomePageSize);
+  }
+
+  onExpensePageChange(event: any): void {
+    this.expensePageIndex = event.pageIndex;
+    this.expensePageSize = event.pageSize;
+    this.loadExpenses(this.expensePageIndex, this.expensePageSize);
   }
 
   navigateToIncomes() {
@@ -171,13 +155,9 @@ export class DashboardComponent implements OnInit {
   navigateToExpenses() {
     this.router.navigate(['/expenses']);
   }
-  updateChartData() {
-    this.pieChartData.datasets[0].data = [this.totalIncome, this.totalExpenses];
-    this.chart?.update(); // Trigger chart update
-  }
 
   logout() {
-    localStorage.removeItem('token'); // Clear the token
-    this.router.navigate(['/auth']); // Redirect to login page
+    localStorage.removeItem('token');
+    this.router.navigate(['/auth']);
   }
 }

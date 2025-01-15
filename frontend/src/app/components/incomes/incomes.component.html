@@ -48,18 +48,27 @@
     </form>
   </mat-card>
 
-  <!-- List of Incomes -->
-  <mat-card class="income-list-card">
-    <h3>Your Incomes</h3>
-    <ul class="income-list">
-      <li *ngFor="let income of incomes" class="income-item">
-        <div>
-          <strong>{{ income.type }}</strong> - ${{ income.amount | number: '1.2-2' }}
-          on {{ income.date | date: 'mediumDate' }}
-          <p>{{ income.notes }}</p>
-        </div>
-        <button mat-button color="warn" (click)="deleteIncome(income.id)">Delete</button>
-      </li>
-    </ul>
-  </mat-card>
-</div>
+<!-- List of Incomes -->
+<mat-card class="income-list-card">
+  <h3>Your Incomes</h3>
+  <ul class="income-list">
+    <li *ngFor="let income of incomes" class="income-item">
+      <div>
+        <strong>{{ income.type }}</strong> - €{{ income.amount | number: '1.2-2' }}
+        on {{ income.date | date: 'mediumDate' }}
+        <p>{{ income.notes }}</p>
+      </div>
+      <button mat-button color="warn" (click)="deleteIncome(income.id)">Delete</button>
+    </li>
+  </ul>
+
+  <!-- Paginator -->
+  <mat-paginator
+    [length]="totalElements"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    (page)="onPageChange($event)"
+    [pageSizeOptions]="[5, 10, 20]"
+  >
+  </mat-paginator>
+</mat-card>

@@ -4,24 +4,37 @@
   justify-content: space-between;
   align-items: center;
   height: 60px;
+  padding: 0 20px;
 
   .navbar-title {
-    font-size: 1.8rem;
+    font-size: 3rem;
     font-weight: bold;
+    font-style: italic;
     color: white;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between title and button */
   }
 
-  .navbar-welcome {
-    font-size: 1.4rem;
-    color: white;
-    margin-right: 40px;
-    margin-left: 20px;
-  }
-
-  .logout-button {
-
-    color: white;
+  .dashboard-button {
     font-size: 1rem;
+    text-transform: none;
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .navbar-welcome {
+      font-size: 2rem;
+      color: white;
+    }
+
+    .logout-button {
+      font-size: 1rem;
+      text-transform: none;
+    }
   }
 }
 
@@ -33,10 +46,14 @@
   padding: 20px;
   background-color: #f9f9f9;
   min-height: calc(100vh - 60px); /* Full height minus navbar */
+  overflow-y: auto; /* Allow scrolling only if content overflows vertically */
+  
 
   .expense-card,
   .expense-list-card {
     width: 45%; /* Adjust width for side-by-side layout */
+    max-height: 90%; /* Prevent cards from exceeding their container */
+    overflow-y: auto; /* Scroll individual cards if their content exceeds height */
     padding: 20px;
     background-color: #e3f2fd; /* Light blue */
     border-radius: 8px;

@@ -22,8 +22,12 @@ export class IncomeService {
   }
 
   // Get all incomes
-  getIncomes(): Observable<any> {
-    return this.http.get(this.apiUrl, { headers: this.getAuthHeaders() });
+  getIncomes(page: number, size: number): Observable<any> {
+    const params = { page: page.toString(), size: size.toString() };
+    return this.http.get(this.apiUrl, {
+      headers: this.getAuthHeaders(),
+      params: params,
+    });
   }
 
   // Add a new income
