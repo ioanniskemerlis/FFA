@@ -1,30 +1,35 @@
-FFA (Finance Tracking App)
-FFA is a full-stack application for managing incomes, and expenses. Built with Angular for the frontend, Spring Boot for the backend, and MongoDB as the database, this project helps users track their finances efficiently.
+<span style="font-size:24px; color:blue; font-weight:bold;">FFA (Finance Tracking App)
+<span style="font-size:12px;">FFA is a full-stack application for managing incomes, and expenses. Built with Angular for the frontend, Spring Boot for the backend, and MongoDB as the database, this project helps users track their finances efficiently.
 
-Prerequisites
+<span style="font-weight:bold;">Prerequisites
 To build and deploy the application, ensure the following tools are installed on your system:
 
-Backend:
+<span style="font-weight:bold;">Backend:
 Java Development Kit (JDK) 17 or newer
 Gradle 8.x (or use the Gradle wrapper)
 MongoDB (local or remote instance)
-Frontend:
+<span style="font-weight:bold;">Frontend:
 Node.js 18.x or newer
 Angular CLI 15.x or newer
-Setup Instructions
+
+
+<span style="font-weight:bold;">Setup Instructions
 Follow these steps to clone, build, and run the project.
 
 1. Clone the Repository
 Create an empty folder on you hard-drive, right-click on an empty space and open a gitbash window
+
 ![Folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/folder.PNG?raw=true "Folder Screenshot")
 
 Clone the repository:
+
 ![Clone the repository Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/clone.PNG?raw=true "Clone the repository Screenshot")
 ```bash
 git clone https://github.com/ioanniskemerlis/FFA.git
 ```
 
 Navigate to project folder
+
 ![Navigate to folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate.PNG?raw=true "Navigate to folder Screenshot")
 ```bash
 cd FFA
@@ -32,6 +37,7 @@ cd FFA
 
 2. Backend Setup
 Navigate to the backend folder:
+
 ![Navigate to backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate2.PNG?raw=true "Navigate to backend Screenshot")
 ```bash
 cd backend
@@ -48,12 +54,14 @@ Using the Gradle wrapper:
 
 
 Run the backend:
+
 ![Running the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun.PNG?raw=true "Running the backend Screenshot")
 ```bash
 gradle bootRun
 ```
 
 If everything is correct, you should see: 
+
 ![Running the backend result Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun1.PNG?raw=true "Running the backend result Screenshot")
 
 Verify the backend:
@@ -69,6 +77,7 @@ cd ../frontend
 ```
 
 Install dependencies:
+
 ![Install dependencies Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/installdep.PNG?raw=true "Install dependencies Screenshot")
 ```bash
 npm install
@@ -76,6 +85,7 @@ npm install
 
 
 Serve the frontend locally:
+
 ![Serving the frontend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/serve.PNG?raw=true "Serving the frontend Screenshot")
 ```bash
 ng serve
@@ -92,6 +102,7 @@ Navigate to the backend folder:
 cd backend
 ```
 Run tests:
+
 ![Tests Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/tests.PNG?raw=true "Tests Screenshot")
 ```bash
 gradle test
@@ -105,13 +116,28 @@ gradle jacocotestreport
 The test results should be at build/reports/jacoco/test/html/index.html
 
 
-SECURITY WARNING!!!
-The MongoDB URI and the SECRET_KEY for password hashing are both hardcoded in the respective classes. This was done for Ease of Review.
-UNDER NO CIRCUMSTANCES you should hardcode these in the repo and should instead use enviromental variables to store them safely.
+<span style="font-size:24px; color:red; font-weight:bold;">SECURITY WARNING!!!
+<span style="font-size:18px; color:black;">The MongoDB URI and the SECRET_KEY for password hashing are both hardcoded in the respective classes. This was done for Ease of Review.
+<span style="font-size:18px; color:black;">UNDER NO CIRCUMSTANCES you should hardcode these in the repo and should instead use enviromental variables to store them safely.
 
-USER CREDENTIALS POPULATED WITH DATA FOR REVIEW & TESTING:
-username: testuser
-pwd: Testuser1$
+<span style="font-size:24px; font-weight:bold;">USER CREDENTIALS POPULATED WITH DATA FOR REVIEW & TESTING:
+<span style="font-size:14px; color:green;">username: testuser
+<span style="font-size:14px; color:green;">pwd: Testuser1$
+
+
+<span style="font-weight:bold;">Demo
+
+Login page
+
+![Login Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/login.PNG?raw=true "Tests Screenshot")
+
+Register page
+
+![Register Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/register.PNG?raw=true "Tests Screenshot")
+
+Dashboard
+
+![Dashboard Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/dashboard.PNG?raw=true "Tests Screenshot")
 
 
 Deployment Instructions
