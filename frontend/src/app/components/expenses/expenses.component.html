@@ -58,7 +58,10 @@
         on {{ expense.date | date: 'mediumDate' }}
         <p>{{ expense.notes }}</p>
       </div>
-      <button mat-button color="warn" (click)="deleteExpense(expense.id)">Delete</button>
+      <div class="expense-actions">
+        <button mat-button class="custom-green-button" (click)="editExpense(expense)">Update</button>
+        <button mat-button color="warn" (click)="deleteExpense(expense.id)">Delete</button>
+      </div>
     </li>
   </ul>
 

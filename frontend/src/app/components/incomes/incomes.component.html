@@ -58,7 +58,10 @@
         on {{ income.date | date: 'mediumDate' }}
         <p>{{ income.notes }}</p>
       </div>
-      <button mat-button color="warn" (click)="deleteIncome(income.id)">Delete</button>
+      <div class="income-actions">
+        <button mat-button class="custom-green-button" (click)="editIncome(income)">Update</button>
+        <button mat-button color="warn" (click)="deleteIncome(income.id)">Delete</button>
+      </div>
     </li>
   </ul>
 
