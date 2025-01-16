@@ -1,4 +1,4 @@
-package gr.aueb.cf.ffa.DAO;
+package gr.aueb.cf.ffa.dao;
 
 import gr.aueb.cf.ffa.model.Expense;
 import org.springframework.data.domain.Page;
