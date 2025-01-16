@@ -19,7 +19,7 @@ Create an empty folder on you hard-drive, right-click on an empty space and open
 ![Folder Screenshot](https://github.com/ioanniskemerlis/FFA/tree/main/images/folder.PNG "Folder Screenshot")
 
 Clone the repository:
-![Clone the repository Screenshot](images/clone.png "Clone the repository Screenshot")
+![Clone the repository Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/clone.PNG?raw=true "Clone the repository Screenshot")
 git clone https://github.com/ioanniskemerlis/FFA.git
 
 Navigate to project folder
