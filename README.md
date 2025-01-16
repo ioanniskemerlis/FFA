@@ -28,44 +28,43 @@ Create an empty folder on you hard-drive, right-click on an empty space and open
 
 ![Folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/folder.PNG?raw=true "Folder Screenshot")
 
-# Clone the repository:
+Clone the repository:
 
 ![Clone the repository Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/clone.PNG?raw=true "Clone the repository Screenshot")
 ```bash
 git clone https://github.com/ioanniskemerlis/FFA.git
 ```
 
-# Navigate to project folder
+### Navigate to project folder
 
 ![Navigate to folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate.PNG?raw=true "Navigate to folder Screenshot")
 ```bash
 cd FFA
 ```
 
-2. Backend Setup
-# Navigate to the backend folder:
+2. ## Backend Setup
+### Navigate to the backend folder:
 
 ![Navigate to backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate2.PNG?raw=true "Navigate to backend Screenshot")
 ```bash
 cd backend
 ```
 
-# Build the backend:
-# If Gradle is installed:
+### Build the backend:
 
 ![Building the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/gbuild.PNG?raw=true "Building the backend Screenshot")
 ```bash
 gradle build
 ```
 
-# Run the backend:
+### Run the backend:
 
 ![Running the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun.PNG?raw=true "Running the backend Screenshot")
 ```bash
 gradle bootRun
 ```
 
-# If everything is correct, you should see: 
+If everything is correct, you should see: 
 
 ![Running the backend result Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun1.PNG?raw=true "Running the backend result Screenshot")
 
@@ -76,14 +75,14 @@ The backend runs by default at http://localhost:8080.
 Open your browser and navigate to Swagger API documentation: http://localhost:8080/swagger-ui/index.html
 
 
-3. ## Frontend Setup
+3. # Frontend Setup
 
-# Navigate to frontend folder
+### Navigate to frontend folder
 ```bash
 cd ../frontend
 ```
 
-# Install dependencies:
+### Install dependencies:
 
 ![Install dependencies Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/installdep.PNG?raw=true "Install dependencies Screenshot")
 ```bash
@@ -91,25 +90,25 @@ npm install
 ```
 
 
-# Serve the frontend locally:
+### Serve the frontend locally:
 
 ![Serving the frontend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/serve.PNG?raw=true "Serving the frontend Screenshot")
 ```bash
 ng serve
 ```
 
-# Verify the frontend:
+Verify the frontend:
 
 The Angular application runs by default at http://localhost:4200. Open your browser and navigate to it.
 
 
-## Testing Instructions
+# Testing Instructions
 
-# Navigate to the backend folder:
+### Navigate to the backend folder:
 ```bash
 cd backend
 ```
-# Run tests:
+### Run tests:
 
 ![Tests Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/tests.PNG?raw=true "Tests Screenshot")
 ```bash
