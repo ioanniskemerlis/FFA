@@ -1,5 +1,5 @@
 # FFA (Freelancer Finance App)
-FFA is a full-stack application for managing incomes and expenses. Built with Angular for the frontend, Spring Boot for the backend, and MongoDB as the database, this project helps users track their finances efficiently.Its architecture ensures maintainability, scalability, and extensibility, setting a solid foundation for future enhancements.
+FFA is a full-stack application managing incomes and expenses built specifically for freelancer delivery drivers. Built with Angular for the frontend, Spring Boot for the backend, and MongoDB as the database, this project helps users track their finances efficiently.Its architecture ensures maintainability, scalability, and extensibility, setting a solid foundation for future enhancements.
 
 The App features:
 
