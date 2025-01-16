@@ -217,7 +217,7 @@ The controller layer is responsible for handling HTTP requests from the frontend
 
 1. ## AuthController
 
-Purpose:
+### Purpose:
 
 Handles user authentication and registration.
 
@@ -225,7 +225,7 @@ Issues JWT tokens for authenticated users.
 
 Verifies authentication with test endpoints.
 
-Key Endpoints:
+### Key Endpoints:
 
 /api/auth/register: Registers a new user.
 
@@ -235,13 +235,13 @@ Key Endpoints:
 
 2. ##  IncomeController
 
-Purpose:
+### Purpose:
 
 Manages CRUD operations for user incomes.
 
 Handles pagination and data transformation (DTOs).
 
-Key Endpoints:
+### Key Endpoints:
 
 /api/incomes: Create a new income or fetch paginated incomes.
 
@@ -251,13 +251,13 @@ Key Endpoints:
 
 3. ## ExpenseController
 
-Purpose:
+### Purpose:
 
 Manages CRUD operations for user expenses.
 
 Handles pagination and data transformation (DTOs).
 
-Key Endpoints:
+### Key Endpoints:
 
 /api/expenses: Create a new expense or fetch paginated expenses.
 
@@ -271,25 +271,25 @@ The service layer encapsulates business logic, interacting with repositories and
 
 4. ## UserService
 
-Purpose:
+### Purpose:
 
 Handles business logic related to user management.
 
 Manages user registration with password hashing.
 
-Key Methods:
+### Key Methods:
 
 registerUser(User user): Hashes the password and saves the user to the database.
 
 5. ## IncomeService
 
-Purpose:
+### Purpose:
 
 Provides business logic for managing incomes.
 
 Interacts with IncomeRepository for CRUD operations.
 
-Key Methods:
+### Key Methods:
 
 addIncome(Income income): Adds a new income record.
 
@@ -301,13 +301,13 @@ deleteIncome(String id): Deletes an income record.
 
 6. ## ExpenseService
 
-Purpose:
+### Purpose:
 
 Provides business logic for managing expenses.
 
 Interacts with ExpenseRepository for CRUD operations.
 
-Key Methods:
+### Key Methods:
 
 addExpense(Expense expense): Adds a new expense record.
 
@@ -319,13 +319,13 @@ deleteExpense(String id): Deletes an expense record.
 
 7. ## CustomUserDetailsService
 
-Purpose:
+### Purpose:
 
 Implements Spring Security’s UserDetailsService for authentication.
 
 Loads user details (e.g., username, password, roles) from the database.
 
-Key Method:
+### Key Method:
 
 loadUserByUsername(String username): Fetches user details for authentication.
 
@@ -336,21 +336,21 @@ The repository layer interacts with the MongoDB database for CRUD operations.
 
 8. ## UserRepository
 
-Purpose:
+### Purpose:
 
 Provides methods to query the users collection.
 
-Key Methods:
+### Key Methods:
 
 findByUsername(String username): Fetches a user by their username.
 
 9. ## IncomeRepository
 
-Purpose:
+### Purpose:
 
 Provides methods to query the incomes collection.
 
-Key Methods:
+### Key Methods:
 
 findByUserId(String userId, Pageable pageable): Fetches paginated incomes for a user.
 
@@ -358,11 +358,11 @@ findAllIncomeByUserId(String userId): Fetches all incomes for a user.
 
 10. ## ExpenseRepository
 
-Purpose:
+### Purpose:
 
 Provides methods to query the expenses collection.
 
-Key Methods:
+### Key Methods:
 
 findByUserId(String userId, Pageable pageable): Fetches paginated expenses for a user.
 
@@ -374,7 +374,7 @@ The model layer defines the data structure used across the application.
 
 11. ## User
 
-Purpose:
+### Purpose:
 
 Represents the user entity stored in the users collection.
 
@@ -386,7 +386,7 @@ Annotations:
 
 12. ## Income
 
-Purpose:
+### Purpose:
 
 Represents the income entity stored in the incomes collection.
 
@@ -398,7 +398,7 @@ Annotations:
 
 13. ## Expense
 
-Purpose:
+### Purpose:
 
 Represents the expense entity stored in the expenses collection.
 
@@ -415,13 +415,13 @@ The utility layer provides reusable components that support application function
 
 14. ## JwtUtil
 
-Purpose:
+### Purpose:
 
 Generates and validates JWT tokens for authentication.
 
 Extracts the username from tokens.
 
-Key Methods:
+### Key Methods:
 
 generateToken(String username): Generates a JWT token for a username.
 
@@ -435,13 +435,13 @@ The security layer enforces authentication and authorization policies.
 
 15. ## SecurityConfig
 
-Purpose:
+### Purpose:
 
 Configures Spring Security settings for the application.
 
 Manages JWT filter integration and endpoint permissions.
 
-Key Configurations:
+### Key Configurations:
 
 CORS: Configures cross-origin requests for the Angular frontend.
 
@@ -451,13 +451,13 @@ CSRF Protection: Disabled to allow token-based authentication.
 
 16. ## JwtAuthenticationFilter
 
-Purpose:
+### Purpose:
 
 Intercepts HTTP requests to validate JWT tokens.
 
 Populates the SecurityContextHolder with authentication details.
 
-Key Methods:
+### Key Methods:
 
 doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain): Validates JWT tokens for each request.
 
@@ -468,11 +468,11 @@ The mapper layer transforms data between entities and DTOs.
 
 17. ## IncomeMapper
 
-Purpose:
+### Purpose:
 
 Converts between Income entities and IncomeRequestDTO/IncomeResponseDTO.
 
-Key Methods:
+### Key Methods:
 
 toEntity(IncomeRequestDTO dto, String userId): Converts a DTO to an entity.
 
@@ -480,11 +480,11 @@ toResponseDTO(Income income): Converts an entity to a DTO.
 
 18. ## ExpenseMapper
 
-Purpose:
+### Purpose:
 
 Converts between Expense entities and ExpenseRequestDTO/ExpenseResponseDTO.
 
-Key Methods:
+### Key Methods:
 
 toEntity(ExpenseRequestDTO dto, String userId): Converts a DTO to an entity.
 
@@ -512,7 +512,6 @@ Deploy the contents of the dist/ folder to a static hosting service or a web ser
 
 Contributions
 Feel free to fork the repository and submit pull requests. Contributions are welcome!
+This repository is open-source, you have my permission to use for experimenting/learning
 
 ---
-License
-This project is licensed under the MIT License.
