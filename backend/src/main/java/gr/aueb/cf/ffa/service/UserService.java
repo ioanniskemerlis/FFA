@@ -1,7 +1,7 @@
 package gr.aueb.cf.ffa.service;
 
 import gr.aueb.cf.ffa.model.User;
-import gr.aueb.cf.ffa.DAO.UserRepository;
+import gr.aueb.cf.ffa.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,9 +17,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Constructs an instance of UserService with the specified DAO and password encoder.
+     * Constructs an instance of UserService with the specified dao and password encoder.
      *
-     * @param userRepository  The DAO used to interact with the users collection in MongoDB.
+     * @param userRepository  The dao used to interact with the users collection in MongoDB.
      * @param passwordEncoder The password encoder used for hashing user passwords.
      */
     @Autowired
