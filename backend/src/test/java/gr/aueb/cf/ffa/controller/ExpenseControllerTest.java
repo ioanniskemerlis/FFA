@@ -1,5 +1,8 @@
 package gr.aueb.cf.ffa.controller;
 
+import gr.aueb.cf.ffa.dto.ExpenseRequestDTO;
+import gr.aueb.cf.ffa.dto.ExpenseResponseDTO;
+import gr.aueb.cf.ffa.mapper.ExpenseMapper;
 import gr.aueb.cf.ffa.model.Expense;
 import gr.aueb.cf.ffa.service.ExpenseService;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +28,9 @@ class ExpenseControllerTest {
     private ExpenseService expenseService;
 
     @Mock
+    private ExpenseMapper expenseMapper;
+
+    @Mock
     private Authentication authentication;
 
     @InjectMocks
@@ -36,68 +42,120 @@ class ExpenseControllerTest {
     }
 
     @Test
-    void addExpense_ShouldReturnCreatedExpense() {
+    void addExpense_ShouldReturnCreatedExpenseDTO() {
+        // Mock input
+        ExpenseRequestDTO requestDTO = new ExpenseRequestDTO("Rent", 1200.0, LocalDate.now(), "Monthly rent");
         Expense expense = new Expense(null, "user123", "Rent", 1200.0, LocalDate.now(), "Monthly rent");
+        Expense savedExpense = new Expense("1", "user123", "Rent", 1200.0, LocalDate.now(), "Monthly rent");
+        ExpenseResponseDTO responseDTO = new ExpenseResponseDTO("1", "user123", "Rent", 1200.0, LocalDate.now(), "Monthly rent");
+
+        // Mock behaviors
         when(authentication.getName()).thenReturn("user123");
-        when(expenseService.addExpense(any(Expense.class))).thenReturn(expense);
+        when(expenseMapper.toEntity(requestDTO, "user123")).thenReturn(expense);
+        when(expenseService.addExpense(expense)).thenReturn(savedExpense);
+        when(expenseMapper.toResponseDTO(savedExpense)).thenReturn(responseDTO);
 
-        Expense result = expenseController.addExpense(expense, authentication);
+        // Perform test
+        ExpenseResponseDTO result = expenseController.addExpense(requestDTO, authentication);
 
-        assertEquals(expense, result);
-        verify(expenseService, times(1)).addExpense(any(Expense.class));
+        // Verify and assert
+        assertEquals(responseDTO, result);
+        verify(expenseService, times(1)).addExpense(expense);
+        verify(expenseMapper, times(1)).toEntity(requestDTO, "user123");
+        verify(expenseMapper, times(1)).toResponseDTO(savedExpense);
     }
 
     @Test
-    void getExpenses_ShouldReturnPagedExpenses() {
-        List<Expense> expenseList = List.of(
+    void getExpenses_ShouldReturnPaginatedExpensesDTO() {
+        // Mock input
+        List<Expense> expenses = List.of(
                 new Expense("1", "user123", "Groceries", 100.0, LocalDate.now(), "Weekly groceries"),
                 new Expense("2", "user123", "Utilities", 200.0, LocalDate.now(), "Monthly bill")
         );
-        Page<Expense> expensePage = new PageImpl<>(expenseList);
+        Page<Expense> expensePage = new PageImpl<>(expenses);
 
+        List<ExpenseResponseDTO> responseDTOs = List.of(
+                new ExpenseResponseDTO("1", "user123", "Groceries", 100.0, LocalDate.now(), "Weekly groceries"),
+                new ExpenseResponseDTO("2", "user123", "Utilities", 200.0, LocalDate.now(), "Monthly bill")
+        );
+        Page<ExpenseResponseDTO> responsePage = new PageImpl<>(responseDTOs);
+
+        // Mock behaviors
         when(authentication.getName()).thenReturn("user123");
         when(expenseService.getExpensesByUser("user123", 0, 10)).thenReturn(expensePage);
+        when(expenseMapper.toResponseDTO(any(Expense.class))).thenAnswer(invocation -> {
+            Expense expense = invocation.getArgument(0);
+            return new ExpenseResponseDTO(expense.getId(), expense.getUserId(), expense.getType(),
+                    expense.getAmount(), expense.getDate(), expense.getNotes());
+        });
 
-        ResponseEntity<Page<Expense>> response = expenseController.getExpenses(0, 10, authentication);
+        // Perform test
+        ResponseEntity<Page<ExpenseResponseDTO>> result = expenseController.getExpenses(0, 10, authentication);
 
-        assertEquals(HttpStatusCode.valueOf(200) , response.getStatusCode());
-        assertEquals(expensePage, response.getBody());
+        // Verify and assert
+        assertEquals(HttpStatusCode.valueOf(200), result.getStatusCode());
+        assertEquals(responsePage.getContent().size(), result.getBody().getContent().size());
         verify(expenseService, times(1)).getExpensesByUser("user123", 0, 10);
     }
 
     @Test
-    void updateExpense_ShouldReturnUpdatedExpense() {
-        Expense updatedExpense = new Expense("1", "user123", "Groceries", 150.0, LocalDate.now(), "Updated groceries");
-        when(expenseService.updateExpense(eq("1"), any(Expense.class))).thenReturn(updatedExpense);
+    void updateExpense_ShouldReturnUpdatedExpenseDTO() {
+        // Mock input
+        ExpenseRequestDTO requestDTO = new ExpenseRequestDTO("Rent", 1300.0, LocalDate.now(), "Updated rent");
+        Expense updatedExpense = new Expense("1", "user123", "Rent", 1300.0, LocalDate.now(), "Updated rent");
+        ExpenseResponseDTO responseDTO = new ExpenseResponseDTO("1", "user123", "Rent", 1300.0, LocalDate.now(), "Updated rent");
 
-        Expense result = expenseController.updateExpense("1", updatedExpense);
+        // Mock behaviors
+        when(expenseMapper.toEntity(requestDTO, null)).thenReturn(updatedExpense);
+        when(expenseService.updateExpense("1", updatedExpense)).thenReturn(updatedExpense);
+        when(expenseMapper.toResponseDTO(updatedExpense)).thenReturn(responseDTO);
 
-        assertEquals(updatedExpense, result);
-        verify(expenseService, times(1)).updateExpense(eq("1"), any(Expense.class));
+        // Perform test
+        ExpenseResponseDTO result = expenseController.updateExpense("1", requestDTO);
+
+        // Verify and assert
+        assertEquals(responseDTO, result);
+        verify(expenseService, times(1)).updateExpense("1", updatedExpense);
+        verify(expenseMapper, times(1)).toEntity(requestDTO, null);
+        verify(expenseMapper, times(1)).toResponseDTO(updatedExpense);
     }
 
     @Test
     void deleteExpense_ShouldCallService() {
-        doNothing().when(expenseService).deleteExpense("1");
-
+        // Perform test
         expenseController.deleteExpense("1");
 
+        // Verify
         verify(expenseService, times(1)).deleteExpense("1");
     }
 
     @Test
-    void getAllExpenses_ShouldReturnAllExpensesForUser() {
-        List<Expense> expenseList = List.of(
+    void getAllExpenses_ShouldReturnAllExpensesDTO() {
+        // Mock input
+        List<Expense> expenses = List.of(
                 new Expense("1", "user123", "Groceries", 100.0, LocalDate.now(), "Weekly groceries"),
                 new Expense("2", "user123", "Utilities", 200.0, LocalDate.now(), "Monthly bill")
         );
 
+        List<ExpenseResponseDTO> responseDTOs = List.of(
+                new ExpenseResponseDTO("1", "user123", "Groceries", 100.0, LocalDate.now(), "Weekly groceries"),
+                new ExpenseResponseDTO("2", "user123", "Utilities", 200.0, LocalDate.now(), "Monthly bill")
+        );
+
+        // Mock behaviors
         when(authentication.getName()).thenReturn("user123");
-        when(expenseService.getAllExpensesByUser("user123")).thenReturn(expenseList);
+        when(expenseService.getAllExpensesByUser("user123")).thenReturn(expenses);
+        when(expenseMapper.toResponseDTO(any(Expense.class))).thenAnswer(invocation -> {
+            Expense expense = invocation.getArgument(0);
+            return new ExpenseResponseDTO(expense.getId(), expense.getUserId(), expense.getType(),
+                    expense.getAmount(), expense.getDate(), expense.getNotes());
+        });
 
-        List<Expense> result = expenseController.getAllExpenses(authentication);
+        // Perform test
+        List<ExpenseResponseDTO> result = expenseController.getAllExpenses(authentication);
 
-        assertEquals(expenseList, result);
+        // Verify and assert
+        assertEquals(responseDTOs.size(), result.size());
         verify(expenseService, times(1)).getAllExpensesByUser("user123");
     }
 }

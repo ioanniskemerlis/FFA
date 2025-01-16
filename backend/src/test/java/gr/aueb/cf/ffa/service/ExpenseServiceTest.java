@@ -1,7 +1,7 @@
 package gr.aueb.cf.ffa.service;
 
 import gr.aueb.cf.ffa.model.Expense;
-import gr.aueb.cf.ffa.DAO.ExpenseRepository;
+import gr.aueb.cf.ffa.dao.ExpenseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -1,7 +1,7 @@
 package gr.aueb.cf.ffa.service;
 
 import gr.aueb.cf.ffa.model.User;
-import gr.aueb.cf.ffa.DAO.UserRepository;
+import gr.aueb.cf.ffa.dao.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
