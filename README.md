@@ -16,7 +16,7 @@ Follow these steps to clone, build, and run the project.
 
 1. Clone the Repository
 Create an empty folder on you hard-drive, right-click on an empty space and open a gitbash window
-![Folder Screenshot](images/folder.png "Folder Screenshot")
+![Folder Screenshot](https://github.com/ioanniskemerlis/FFA/tree/main/images/folder.png "Folder Screenshot")
 
 Clone the repository:
 ![Clone the repository Screenshot](images/clone.png "Clone the repository Screenshot")
