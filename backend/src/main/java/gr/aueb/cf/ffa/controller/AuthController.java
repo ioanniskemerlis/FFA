@@ -3,6 +3,11 @@ package gr.aueb.cf.ffa.controller;
 import gr.aueb.cf.ffa.model.User;
 import gr.aueb.cf.ffa.repository.UserRepository;
 import gr.aueb.cf.ffa.util.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * REST controller for authentication and authorization.
+ * Provides endpoints for user registration, login, and JWT validation.
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -33,6 +42,11 @@ public class AuthController {
      * @param user The user details.
      * @return A success message or an error message if the username already exists.
      */
+    @Operation(summary = "Register a new user", description = "Registers a new user with a unique username and hashed password.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Username already exists", content = @Content(schema = @Schema(example = "{\"message\":\"Username already exists!\"}")))
+    })
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
@@ -63,6 +77,11 @@ public class AuthController {
      * @param user The login request containing username and password.
      * @return A JWT token if authentication is successful.
      */
+    @Operation(summary = "User login", description = "Authenticates the user and issues a JWT token if credentials are valid.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login successful, JWT token returned", content = @Content(schema = @Schema(example = "{\"token\":\"your.jwt.token.here\"}"))),
+            @ApiResponse(responseCode = "401", description = "Invalid username or password", content = @Content(schema = @Schema(example = "{\"message\":\"Invalid username or password\"}")))
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         Optional<User> foundUser = userRepository.findByUsername(user.getUsername());
@@ -87,7 +106,13 @@ public class AuthController {
 
     /**
      * Test endpoint to verify JWT authentication.
+     *
+     * @return A success message if JWT is valid.
      */
+    @Operation(summary = "Test JWT authentication", description = "A test endpoint to verify if JWT authentication is working.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "JWT is working")
+    })
     @GetMapping("/test")
     public String test() {
         return "JWT is working!";

@@ -9,33 +9,41 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+/**
+ * Service class responsible for managing income-related operations.
+ * Provides methods for adding, retrieving, updating, and deleting incomes.
+ */
 @Service
 public class IncomeService {
 
     private final IncomeRepository incomeRepository;
 
+    /**
+     * Constructs an instance of IncomeService with the specified repository.
+     *
+     * @param incomeRepository The repository used to interact with the incomes collection.
+     */
     @Autowired
     public IncomeService(IncomeRepository incomeRepository) {
         this.incomeRepository = incomeRepository;
     }
 
     /**
-     * Add a new income.
+     * Adds a new income to the database.
      *
-     * @param income The income object to be added.
-     * @return The saved Income object.
+     * @param income The income object to be saved.
+     * @return The saved income object with its generated ID.
      */
     public Income addIncome(Income income) {
         return incomeRepository.save(income);
     }
 
     /**
-     * Get all incomes for a user with pagination.
+     * Retrieves a paginated list of incomes for a specific user.
      *
-     * @param userId The ID of the user.
+     * @param userId The ID of the user whose incomes are being retrieved.
      * @param page   The page number (0-based index).
-     * @param size   The number of items per page.
+     * @param size   The number of records per page.
      * @return A Page of Income objects.
      */
     public Page<Income> getIncomesByUser(String userId, int page, int size) {
@@ -43,11 +51,12 @@ public class IncomeService {
     }
 
     /**
-     * Update an income.
+     * Updates an existing income with new values.
      *
-     * @param id           The ID of the income to update.
-     * @param updatedIncome The updated Income object.
-     * @return The updated Income object.
+     * @param id            The ID of the income to update.
+     * @param updatedIncome The updated income object with new values.
+     * @return The updated income object after saving to the database.
+     * @throws RuntimeException If the income with the specified ID is not found.
      */
     public Income updateIncome(String id, Income updatedIncome) {
         Income existingIncome = incomeRepository.findById(id)
@@ -60,7 +69,7 @@ public class IncomeService {
     }
 
     /**
-     * Delete an income.
+     * Deletes an income from the database by its ID.
      *
      * @param id The ID of the income to delete.
      */
@@ -68,6 +77,12 @@ public class IncomeService {
         incomeRepository.deleteById(id);
     }
 
+    /**
+     * Retrieves all incomes for a specific user.
+     *
+     * @param userId The ID of the user whose incomes are being retrieved.
+     * @return A list of all Income objects for the specified user.
+     */
     public List<Income> getAllIncomesByUser(String userId) {
         return incomeRepository.findAllIncomeByUserId(userId);
     }

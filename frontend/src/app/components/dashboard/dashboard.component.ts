@@ -43,6 +43,10 @@ export class DashboardComponent implements OnInit {
   expenses: any[] = [];
   username: string = '';
 
+  // Flags to track when calculations are complete
+  incomeCalculationDone = false;
+  expenseCalculationDone = false;
+
   // Pagination properties for incomes and expenses
   incomePageIndex = 0;
   incomePageSize = 10;
@@ -58,7 +62,7 @@ export class DashboardComponent implements OnInit {
     labels: ['Incomes', 'Expenses'],
     datasets: [
       {
-        data: [0, 0], // Default data
+        data: [0, 0],
         backgroundColor: ['#4CAF50', '#F44336'], // Green and Red
         hoverBackgroundColor: ['#66BB6A', '#EF5350'], // Hover colors
       },
@@ -80,9 +84,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsernameFromToken();
+    this.calculateTotalIncome();
+    this.calculateTotalExpenses();
     this.loadIncomes(this.incomePageIndex, this.incomePageSize);
     this.loadExpenses(this.expensePageIndex, this.expensePageSize);
-    
   }
 
   getUsernameFromToken() {
@@ -95,17 +100,51 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  calculateTotalIncome() {
+    this.incomeService.getAllIncomes().subscribe({
+      next: (allIncomes) => {
+        this.totalIncome = allIncomes.reduce(
+          (sum: number, income: any) => sum + income.amount,
+          0
+        );
+        this.incomeCalculationDone = true;
+        this.updateNetProfitAndChart();
+      },
+      error: (err) => console.error('Error calculating total income:', err),
+    });
+  }
+
+  calculateTotalExpenses() {
+    this.expenseService.getAllExpenses().subscribe({
+      next: (allExpenses) => {
+        this.totalExpenses = allExpenses.reduce(
+          (sum: number, expense: any) => sum + expense.amount,
+          0
+        );
+        this.expenseCalculationDone = true;
+        this.updateNetProfitAndChart();
+      },
+      error: (err) => console.error('Error calculating total expenses:', err),
+    });
+  }
+
+  updateNetProfitAndChart() {
+    if (this.incomeCalculationDone && this.expenseCalculationDone) {
+      this.netProfit = this.totalIncome - this.totalExpenses;
+      this.updateChartData();
+    }
+  }
+
+  updateChartData() {
+    this.pieChartData.datasets[0].data = [this.totalIncome, this.totalExpenses];
+    this.chart?.update();
+  }
+
   loadIncomes(page: number, size: number) {
     this.incomeService.getIncomes(page, size).subscribe({
       next: (response) => {
         this.incomes = response.content;
         this.incomeTotalItems = response.totalElements;
-        this.totalIncome = this.incomes.reduce(
-          (sum: number, income: any) => sum + income.amount,
-          0
-        );
-        this.updateNetProfit();
-        this.updateChartData();
       },
       error: (err) => console.error('Error loading incomes:', err),
     });
@@ -116,33 +155,18 @@ export class DashboardComponent implements OnInit {
       next: (response) => {
         this.expenses = response.content;
         this.expenseTotalItems = response.totalElements;
-        this.totalExpenses = this.expenses.reduce(
-          (sum: number, expense: any) => sum + expense.amount,
-          0
-        );
-        this.updateNetProfit();
-        this.updateChartData();
       },
       error: (err) => console.error('Error loading expenses:', err),
     });
   }
 
-  updateNetProfit() {
-    this.netProfit = this.totalIncome - this.totalExpenses;
-  }
-
-  updateChartData() {
-    this.pieChartData.datasets[0].data = [this.totalIncome, this.totalExpenses];
-    this.chart?.update();
-  }
-
-  onIncomePageChange(event: any): void {
+  onIncomePageChange(event: PageEvent): void {
     this.incomePageIndex = event.pageIndex;
     this.incomePageSize = event.pageSize;
     this.loadIncomes(this.incomePageIndex, this.incomePageSize);
   }
 
-  onExpensePageChange(event: any): void {
+  onExpensePageChange(event: PageEvent): void {
     this.expensePageIndex = event.pageIndex;
     this.expensePageSize = event.pageSize;
     this.loadExpenses(this.expensePageIndex, this.expensePageSize);

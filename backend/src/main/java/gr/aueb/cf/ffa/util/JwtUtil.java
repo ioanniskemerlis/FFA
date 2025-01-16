@@ -1,8 +1,10 @@
 package gr.aueb.cf.ffa.util;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 
 @Component
@@ -10,6 +12,8 @@ public class JwtUtil {
 
     private final String SECRET_KEY = "+o8B+HUKZVd+GUGkZaJYu7oanmXiKLkQi1g9wvs+wjE=";
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
+
+    private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
     /**
      * Generates a JWT token for the given username.
@@ -22,7 +26,7 @@ public class JwtUtil {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(key, SignatureAlgorithm.HS256) // Use key and specify algorithm
                 .compact();
     }
 
@@ -33,7 +37,12 @@ public class JwtUtil {
      * @return The username.
      */
     public String extractUsername(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(key) // Use the key object
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     /**
@@ -44,8 +53,12 @@ public class JwtUtil {
      * @return True if valid, false otherwise.
      */
     public boolean validateToken(String token, String username) {
-        String extractedUsername = extractUsername(token);
-        return extractedUsername.equals(username) && !isTokenExpired(token);
+        try {
+            String extractedUsername = extractUsername(token);
+            return extractedUsername.equals(username) && !isTokenExpired(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            return false; // Invalid token
+        }
     }
 
     /**
@@ -55,7 +68,12 @@ public class JwtUtil {
      * @return True if expired, false otherwise.
      */
     private boolean isTokenExpired(String token) {
-        Date expiration = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration();
+        Date expiration = Jwts.parserBuilder()
+                .setSigningKey(key) // Use the key object
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
         return expiration.before(new Date());
     }
 }

@@ -25,6 +25,10 @@ export class ExpenseService {
     });
   }
 
+  getAllExpenses(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/all`, { headers: this.getAuthHeaders() });
+  }
+
   addExpense(expense: any): Observable<any> {
     return this.http.post(this.apiUrl, expense, { headers: this.getAuthHeaders() });
   }
