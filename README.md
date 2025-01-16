@@ -510,7 +510,8 @@ Deploy the contents of the dist/ folder to a static hosting service or a web ser
 
 ---
 
-Contributions
+#Contributions
+
 Feel free to fork the repository and submit pull requests. Contributions are welcome!
 This repository is open-source, you have my permission to use for experimenting/learning
 
