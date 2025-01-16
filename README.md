@@ -7,11 +7,16 @@ To build and deploy the application, ensure the following tools are installed on
 
 ### Backend:
 Java Development Kit (JDK) 17 or newer
+
 Gradle 8.x (or use the Gradle wrapper)
+
 MongoDB (local or remote instance)
+
 ### Frontend:
 Node.js 18.x or newer
+
 Angular CLI 15.x or newer
+
 ---
 
 
@@ -155,10 +160,12 @@ Build the production version of the Angular application:
 ng build --prod
 ```
 Deploy the contents of the dist/ folder to a static hosting service or a web server.
+
 ---
 
 Contributions
 Feel free to fork the repository and submit pull requests. Contributions are welcome!
+
 ---
 License
 This project is licensed under the MIT License.
