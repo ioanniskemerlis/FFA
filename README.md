@@ -30,39 +30,49 @@ Create an empty folder on you hard-drive, right-click on an empty space and open
 
 Clone the repository:
 
-![Clone the repository Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/clone.PNG?raw=true "Clone the repository Screenshot")
 ```bash
 git clone https://github.com/ioanniskemerlis/FFA.git
 ```
 
+![Clone the repository Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/clone.PNG?raw=true "Clone the repository Screenshot")
+
+
 ### Navigate to project folder
 
-![Navigate to folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate.PNG?raw=true "Navigate to folder Screenshot")
 ```bash
 cd FFA
 ```
 
+![Navigate to folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate.PNG?raw=true "Navigate to folder Screenshot")
+
+
 2. ## Backend Setup
 ### Navigate to the backend folder:
 
-![Navigate to backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate2.PNG?raw=true "Navigate to backend Screenshot")
 ```bash
 cd backend
 ```
 
+![Navigate to backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate2.PNG?raw=true "Navigate to backend Screenshot")
+
+
 ### Build the backend:
 
-![Building the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/gbuild.PNG?raw=true "Building the backend Screenshot")
 ```bash
 gradle build
 ```
 
+![Building the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/gbuild.PNG?raw=true "Building the backend Screenshot")
+
+
 ### Run the backend:
 
-![Running the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun.PNG?raw=true "Running the backend Screenshot")
 ```bash
 gradle bootRun
 ```
+
+![Running the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun.PNG?raw=true "Running the backend Screenshot")
+
 
 If everything is correct, you should see: 
 
@@ -92,10 +102,12 @@ npm install
 
 ### Serve the frontend locally:
 
-![Serving the frontend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/serve.PNG?raw=true "Serving the frontend Screenshot")
 ```bash
 ng serve
 ```
+
+![Serving the frontend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/serve.PNG?raw=true "Serving the frontend Screenshot")
+
 
 Verify the frontend:
 
@@ -110,10 +122,11 @@ cd backend
 ```
 ### Run tests:
 
-![Tests Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/tests.PNG?raw=true "Tests Screenshot")
 ```bash
 gradle test
 ```
+![Tests Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/tests.PNG?raw=true "Tests Screenshot")
+
 
 The test results should be at build/reports/tests/test/index.html
 
