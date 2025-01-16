@@ -1,19 +1,21 @@
-<span style="font-size:24px; color:blue; font-weight:bold;">FFA (Finance Tracking App)
-<span style="font-size:12px;">FFA is a full-stack application for managing incomes, and expenses. Built with Angular for the frontend, Spring Boot for the backend, and MongoDB as the database, this project helps users track their finances efficiently.
+# FFA (Finance Tracking App)
+FFA is a full-stack application for managing incomes and expenses. Built with Angular for the frontend, Spring Boot for the backend, and MongoDB as the database, this project helps users track their finances efficiently.
+---
 
-<span style="font-weight:bold;">Prerequisites
+## Prerequisites
 To build and deploy the application, ensure the following tools are installed on your system:
 
-<span style="font-weight:bold;">Backend:
+### Backend:
 Java Development Kit (JDK) 17 or newer
 Gradle 8.x (or use the Gradle wrapper)
 MongoDB (local or remote instance)
-<span style="font-weight:bold;">Frontend:
+### Frontend:
 Node.js 18.x or newer
 Angular CLI 15.x or newer
+---
 
 
-<span style="font-weight:bold;">Setup Instructions
+### Setup Instructions
 Follow these steps to clone, build, and run the project.
 
 1. Clone the Repository
@@ -114,32 +116,33 @@ The test results should be at build/reports/tests/test/index.html
 gradle jacocotestreport
 ```
 The test results should be at build/reports/jacoco/test/html/index.html
+---
 
 
-<span style="font-size:24px; color:red; font-weight:bold;">SECURITY WARNING!!!
-<span style="font-size:18px; color:black;">The MongoDB URI and the SECRET_KEY for password hashing are both hardcoded in the respective classes. This was done for Ease of Review.
-<span style="font-size:18px; color:black;">UNDER NO CIRCUMSTANCES you should hardcode these in the repo and should instead use enviromental variables to store them safely.
+## Security Warning ⚠️
+The MongoDB URI and the SECRET_KEY for password hashing are both hardcoded in the respective classes. This was done for Ease of Review.
+### **Never hardcode sensitive information in a repository.**  use enviromental variables to store them safely.
 
-<span style="font-size:24px; font-weight:bold;">USER CREDENTIALS POPULATED WITH DATA FOR REVIEW & TESTING:
-<span style="font-size:14px; color:green;">username: testuser
-<span style="font-size:14px; color:green;">pwd: Testuser1$
+## User Credentials for Testing
+- **Username**: `testuser`
+- **Password**: `Testuser1$`
 
+---
 
-<span style="font-weight:bold;">Demo
-
-Login page
+## Demo
+### Login Page
 
 ![Login Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/login.PNG?raw=true "Tests Screenshot")
 
-Register page
+### Register Page
 
 ![Register Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/register.PNG?raw=true "Tests Screenshot")
 
-Dashboard
+### Dashboard
 
 ![Dashboard Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/dashboard.PNG?raw=true "Tests Screenshot")
 
-
+---
 Deployment Instructions
 1. Backend Deployment
 Package the Spring Boot application as a JAR file:
@@ -152,11 +155,10 @@ Build the production version of the Angular application:
 ng build --prod
 ```
 Deploy the contents of the dist/ folder to a static hosting service or a web server.
-
-
+---
 
 Contributions
 Feel free to fork the repository and submit pull requests. Contributions are welcome!
-
+---
 License
 This project is licensed under the MIT License.
