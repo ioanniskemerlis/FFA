@@ -34,7 +34,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 export class ExpensesComponent implements OnInit {
   expenses: any[] = [];
   newExpense = { type: '', amount: 0, date: '', notes: '' };
-  username: string = ''; // Define the username property
+  username: string = '';
   expenseTypes: string[] = [
     'Tax',
     'Fuel',
@@ -51,6 +51,9 @@ export class ExpensesComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
+  isEditing: boolean = false; // Indicates if the form is in editing mode
+  currentEditingId: string | null = null; // Stores the ID of the expense being edited
+
   constructor(private expenseService: ExpenseService, private router: Router) {}
 
   ngOnInit(): void {
@@ -59,20 +62,20 @@ export class ExpensesComponent implements OnInit {
   }
 
   getUsernameFromToken() {
-    const token = localStorage.getItem('token'); // Retrieve token from localStorage
+    const token = localStorage.getItem('token');
     if (token) {
-      const decodedToken: any = jwtDecode(token); // Decode the token
-      this.username = decodedToken?.sub || 'User'; // Extract the username (usually in `sub` claim)
+      const decodedToken: any = jwtDecode(token);
+      this.username = decodedToken?.sub || 'User';
     } else {
-      this.router.navigate(['/auth']); // Redirect to login if no token is found
+      this.router.navigate(['/auth']);
     }
   }
 
   loadExpenses(page: number, size: number) {
     this.expenseService.getExpenses(page, size).subscribe({
       next: (response) => {
-        this.expenses = response.content; // Paginated data
-        this.totalElements = response.totalElements; // Total number of entries
+        this.expenses = response.content;
+        this.totalElements = response.totalElements;
       },
       error: (error) => console.error('Error loading expenses:', error),
     });
@@ -85,14 +88,27 @@ export class ExpensesComponent implements OnInit {
   }
 
   addExpense() {
-    this.expenseService.addExpense(this.newExpense).subscribe({
-      next: () => {
-        alert('Expense added successfully!');
-        this.newExpense = { type: '', amount: 0, date: '', notes: '' };
-        this.loadExpenses(this.pageIndex, this.pageSize);
-      },
-      error: (error) => console.error('Error adding expense:', error),
-    });
+    if (this.isEditing) {
+      // Update mode
+      this.expenseService.updateExpense(this.currentEditingId!, this.newExpense).subscribe({
+        next: () => {
+          alert('Expense updated successfully!');
+          this.resetForm();
+          this.loadExpenses(this.pageIndex, this.pageSize);
+        },
+        error: (error) => console.error('Error updating expense:', error),
+      });
+    } else {
+      // Add mode
+      this.expenseService.addExpense(this.newExpense).subscribe({
+        next: () => {
+          alert('Expense added successfully!');
+          this.resetForm();
+          this.loadExpenses(this.pageIndex, this.pageSize);
+        },
+        error: (error) => console.error('Error adding expense:', error),
+      });
+    }
   }
 
   deleteExpense(id: string) {
@@ -105,9 +121,21 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
+  editExpense(expense: any) {
+    this.newExpense = { ...expense }; // Prefill the form with the expense details
+    this.isEditing = true;
+    this.currentEditingId = expense.id; // Store the expense ID
+  }
+
+  resetForm() {
+    this.newExpense = { type: '', amount: 0, date: '', notes: '' };
+    this.isEditing = false;
+    this.currentEditingId = null;
+  }
+
   logout() {
-    localStorage.removeItem('token'); // Clear the token
-    this.router.navigate(['/auth']); // Redirect to login page
+    localStorage.removeItem('token');
+    this.router.navigate(['/auth']);
   }
 
   dashboard() {

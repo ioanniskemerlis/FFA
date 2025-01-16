@@ -41,6 +41,9 @@ export class IncomesComponent implements OnInit {
   totalElements = 0;
   pageSize = 10;
   pageIndex = 0;
+  
+  isEditing: boolean = false; // Indicates if the form is in editing mode
+  currentEditingId: string | null = null; // Stores the ID of the expense being edited
 
   constructor(private incomeService: IncomeService, private router: Router) {}
 
@@ -75,15 +78,34 @@ export class IncomesComponent implements OnInit {
     this.loadIncomes(this.pageIndex, this.pageSize);
   }
 
+
   addIncome() {
-    this.incomeService.addIncome(this.newIncome).subscribe({
-      next: () => {
-        alert('Income added successfully!');
-        this.newIncome = { type: '', amount: 0, date: '', notes: '' };
-        this.loadIncomes(this.pageIndex, this.pageSize);
-      },
-      error: (error) => console.error('Error adding income:', error),
-    });
+    if (this.isEditing) {
+      // Update mode
+      this.incomeService.updateIncome(this.currentEditingId!, this.newIncome).subscribe({
+        next: () => {
+          alert('Expense updated successfully!');
+          this.resetForm();
+          this.loadIncomes(this.pageIndex, this.pageSize);
+        },
+        error: (error) => console.error('Error updating income:', error),
+      });
+    } else {
+      // Add mode
+      this.incomeService.addIncome(this.newIncome).subscribe({
+        next: () => {
+          alert('Income added successfully!');
+          this.resetForm();
+          this.loadIncomes(this.pageIndex, this.pageSize);
+        },
+        error: (error) => console.error('Error adding income:', error),
+      });
+    }
+  }
+  editIncome(income: any) {
+    this.newIncome = { ...income }; // Prefill the form with the income details
+    this.isEditing = true;
+    this.currentEditingId = income.id; // Store the income ID
   }
 
   deleteIncome(id: string) {
@@ -94,6 +116,12 @@ export class IncomesComponent implements OnInit {
       },
       error: (error) => console.error('Error deleting income:', error),
     });
+  }
+
+  resetForm() {
+    this.newIncome = { type: '', amount: 0, date: '', notes: '' };
+    this.isEditing = false;
+    this.currentEditingId = null;
   }
 
   logout() {
