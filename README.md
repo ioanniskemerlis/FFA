@@ -25,14 +25,14 @@ git clone https://github.com/ioanniskemerlis/FFA.git
 ```
 
 Navigate to project folder
-![Navigate to folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate.png?raw=true "Navigate to folder Screenshot")
+![Navigate to folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate.PNG?raw=true "Navigate to folder Screenshot")
 ```bash
 cd FFA
 ```
 
 2. Backend Setup
 Navigate to the backend folder:
-![Navigate to backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate2.png?raw=true "Navigate to backend Screenshot")
+![Navigate to backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate2.PNG?raw=true "Navigate to backend Screenshot")
 ```bash
 cd backend
 ```
@@ -48,13 +48,13 @@ Using the Gradle wrapper:
 
 
 Run the backend:
-![Running the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun.png?raw=true "Running the backend Screenshot")
+![Running the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun.PNG?raw=true "Running the backend Screenshot")
 ```bash
 gradle bootRun
 ```
 
 If everything is correct, you should see: 
-![Running the backend result Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun1.png?raw=true "Running the backend result Screenshot")
+![Running the backend result Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun1.PNG?raw=true "Running the backend result Screenshot")
 
 Verify the backend:
 The backend runs by default at http://localhost:8080. Open your browser and navigate to:
@@ -69,14 +69,14 @@ cd ../frontend
 ```
 
 Install dependencies:
-![Install dependencies Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/installdep.png?raw=true "Install dependencies Screenshot")
+![Install dependencies Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/installdep.PNG?raw=true "Install dependencies Screenshot")
 ```bash
 npm install
 ```
 
 
 Serve the frontend locally:
-![Serving the frontend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/serve.png?raw=true "Serving the frontend Screenshot")
+![Serving the frontend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/serve.PNG?raw=true "Serving the frontend Screenshot")
 ```bash
 ng serve
 ```
@@ -92,7 +92,7 @@ Navigate to the backend folder:
 cd backend
 ```
 Run tests:
-![Tests Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/tests.png?raw=true "Tests Screenshot")
+![Tests Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/tests.PNG?raw=true "Tests Screenshot")
 ```bash
 gradle test
 ```
