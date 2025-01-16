@@ -6,8 +6,6 @@ import gr.aueb.cf.ffa.mapper.IncomeMapper;
 import gr.aueb.cf.ffa.model.Income;
 import gr.aueb.cf.ffa.service.IncomeService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
