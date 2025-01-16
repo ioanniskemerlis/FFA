@@ -1,4 +1,4 @@
-package gr.aueb.cf.ffa.repository;
+package gr.aueb.cf.ffa.DAO;
 
 import gr.aueb.cf.ffa.model.Income;
 import org.springframework.data.mongodb.repository.MongoRepository;

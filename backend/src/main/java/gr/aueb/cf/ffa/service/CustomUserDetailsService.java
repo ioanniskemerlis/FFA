@@ -1,7 +1,7 @@
 package gr.aueb.cf.ffa.service;
 
 import gr.aueb.cf.ffa.model.User;
-import gr.aueb.cf.ffa.repository.UserRepository;
+import gr.aueb.cf.ffa.DAO.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,9 +18,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     /**
-     * Constructs an instance of {@code CustomUserDetailsService} with the specified repository.
+     * Constructs an instance of {@code CustomUserDetailsService} with the specified DAO.
      *
-     * @param userRepository The repository used to fetch user data from the MongoDB database.
+     * @param userRepository The DAO used to fetch user data from the MongoDB database.
      */
     @Autowired
     public CustomUserDetailsService(UserRepository userRepository) {

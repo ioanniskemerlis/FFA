@@ -1,7 +1,7 @@
 package gr.aueb.cf.ffa.service;
 
 import gr.aueb.cf.ffa.model.Income;
-import gr.aueb.cf.ffa.repository.IncomeRepository;
+import gr.aueb.cf.ffa.DAO.IncomeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -1,7 +1,7 @@
 package gr.aueb.cf.ffa.service;
 
 import gr.aueb.cf.ffa.model.Expense;
-import gr.aueb.cf.ffa.repository.ExpenseRepository;
+import gr.aueb.cf.ffa.DAO.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +20,9 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
 
     /**
-     * Constructs an instance of ExpenseService with the specified repository.
+     * Constructs an instance of ExpenseService with the specified DAO.
      *
-     * @param expenseRepository The repository used to interact with the expenses collection.
+     * @param expenseRepository The DAO used to interact with the expenses collection.
      */
     @Autowired
     public ExpenseService(ExpenseRepository expenseRepository) {

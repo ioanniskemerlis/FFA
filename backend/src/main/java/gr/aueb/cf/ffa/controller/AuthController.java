@@ -1,7 +1,7 @@
 package gr.aueb.cf.ffa.controller;
 
 import gr.aueb.cf.ffa.model.User;
-import gr.aueb.cf.ffa.repository.UserRepository;
+import gr.aueb.cf.ffa.DAO.UserRepository;
 import gr.aueb.cf.ffa.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -1,7 +1,7 @@
 package gr.aueb.cf.ffa.service;
 
 import gr.aueb.cf.ffa.model.Income;
-import gr.aueb.cf.ffa.repository.IncomeRepository;
+import gr.aueb.cf.ffa.DAO.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,9 +19,9 @@ public class IncomeService {
     private final IncomeRepository incomeRepository;
 
     /**
-     * Constructs an instance of IncomeService with the specified repository.
+     * Constructs an instance of IncomeService with the specified DAO.
      *
-     * @param incomeRepository The repository used to interact with the incomes collection.
+     * @param incomeRepository The DAO used to interact with the incomes collection.
      */
     @Autowired
     public IncomeService(IncomeRepository incomeRepository) {
