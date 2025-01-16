@@ -1,5 +1,8 @@
 package gr.aueb.cf.ffa.controller;
 
+import gr.aueb.cf.ffa.dto.IncomeRequestDTO;
+import gr.aueb.cf.ffa.dto.IncomeResponseDTO;
+import gr.aueb.cf.ffa.mapper.IncomeMapper;
 import gr.aueb.cf.ffa.model.Income;
 import gr.aueb.cf.ffa.service.IncomeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +26,9 @@ class IncomeControllerTest {
     private IncomeService incomeService;
 
     @Mock
+    private IncomeMapper incomeMapper;
+
+    @Mock
     private Authentication authentication;
 
     @InjectMocks
@@ -34,47 +40,78 @@ class IncomeControllerTest {
     }
 
     @Test
-    void addIncome_ShouldReturnCreatedIncome() {
+    void addIncome_ShouldReturnCreatedIncomeDTO() {
+        IncomeRequestDTO requestDTO = new IncomeRequestDTO();
+        requestDTO.setType("Salary");
+        requestDTO.setAmount(5000.0);
+        requestDTO.setDate(LocalDate.now());
+        requestDTO.setNotes("Monthly salary");
+
         Income income = new Income(null, "user123", "Salary", 5000.0, LocalDate.now(), "Monthly salary");
+        IncomeResponseDTO responseDTO = new IncomeResponseDTO();
+        responseDTO.setId("1");
+        responseDTO.setUserId("user123");
+        responseDTO.setType("Salary");
+        responseDTO.setAmount(5000.0);
+        responseDTO.setDate(LocalDate.now());
+        responseDTO.setNotes("Monthly salary");
+
         when(authentication.getName()).thenReturn("user123");
-        when(incomeService.addIncome(any(Income.class))).thenReturn(income);
+        when(incomeMapper.toEntity(requestDTO, "user123")).thenReturn(income);
+        when(incomeService.addIncome(income)).thenReturn(income);
+        when(incomeMapper.toResponseDTO(income)).thenReturn(responseDTO);
 
-        Income result = incomeController.addIncome(income, authentication);
+        IncomeResponseDTO result = incomeController.addIncome(requestDTO, authentication);
 
-        assertEquals(income, result);
-        verify(incomeService, times(1)).addIncome(any(Income.class));
+        assertEquals(responseDTO, result);
+        verify(incomeMapper, times(1)).toEntity(requestDTO, "user123");
+        verify(incomeService, times(1)).addIncome(income);
+        verify(incomeMapper, times(1)).toResponseDTO(income);
     }
 
     @Test
-    void getIncomes_ShouldReturnPagedIncomes() {
+    void getIncomes_ShouldReturnPagedIncomeDTOs() {
         List<Income> incomeList = List.of(
                 new Income("1", "user123", "Freelancing", 1500.0, LocalDate.now(), "Project payment"),
                 new Income("2", "user123", "Bonus", 500.0, LocalDate.now(), "Quarterly bonus")
         );
         Page<Income> incomePage = new PageImpl<>(incomeList);
 
+        List<IncomeResponseDTO> responseDTOList = List.of(
+                new IncomeResponseDTO("1", "user123", "Freelancing", 1500.0, LocalDate.now(), "Project payment"),
+                new IncomeResponseDTO("2", "user123", "Bonus", 500.0, LocalDate.now(), "Quarterly bonus")
+        );
+        Page<IncomeResponseDTO> responsePage = new PageImpl<>(responseDTOList);
+
         when(authentication.getName()).thenReturn("user123");
         when(incomeService.getIncomesByUser("user123", 0, 10)).thenReturn(incomePage);
+        when(incomeMapper.toResponseDTO(any(Income.class))).thenReturn(responseDTOList.get(0), responseDTOList.get(1));
 
-        Page<Income> result = incomeController.getIncomes(0, 10, authentication);
+        Page<IncomeResponseDTO> result = incomeController.getIncomes(0, 10, authentication);
 
-        assertEquals(incomePage, result);
+        assertEquals(responsePage.getContent().size(), result.getContent().size());
         verify(incomeService, times(1)).getIncomesByUser("user123", 0, 10);
     }
 
     @Test
-    void getAllIncomes_ShouldReturnAllIncomesForUser() {
+    void getAllIncomes_ShouldReturnAllIncomeDTOsForUser() {
         List<Income> incomeList = List.of(
                 new Income("1", "user123", "Freelancing", 1500.0, LocalDate.now(), "Project payment"),
                 new Income("2", "user123", "Bonus", 500.0, LocalDate.now(), "Quarterly bonus")
         );
 
+        List<IncomeResponseDTO> responseDTOList = List.of(
+                new IncomeResponseDTO("1", "user123", "Freelancing", 1500.0, LocalDate.now(), "Project payment"),
+                new IncomeResponseDTO("2", "user123", "Bonus", 500.0, LocalDate.now(), "Quarterly bonus")
+        );
+
         when(authentication.getName()).thenReturn("user123");
         when(incomeService.getAllIncomesByUser("user123")).thenReturn(incomeList);
+        when(incomeMapper.toResponseDTO(any(Income.class))).thenReturn(responseDTOList.get(0), responseDTOList.get(1));
 
-        List<Income> result = incomeController.getAllIncomes(authentication);
+        List<IncomeResponseDTO> result = incomeController.getAllIncomes(authentication);
 
-        assertEquals(incomeList, result);
+        assertEquals(responseDTOList.size(), result.size());
         verify(incomeService, times(1)).getAllIncomesByUser("user123");
     }
 }

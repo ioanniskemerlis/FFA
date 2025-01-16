@@ -1,7 +1,7 @@
 package gr.aueb.cf.ffa.controller;
 
 import gr.aueb.cf.ffa.model.User;
-import gr.aueb.cf.ffa.DAO.UserRepository;
+import gr.aueb.cf.ffa.dao.UserRepository;
 import gr.aueb.cf.ffa.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
