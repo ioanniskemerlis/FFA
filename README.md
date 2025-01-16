@@ -16,35 +16,45 @@ Follow these steps to clone, build, and run the project.
 
 1. Clone the Repository
 Create an empty folder on you hard-drive, right-click on an empty space and open a gitbash window
-![Folder Screenshot](https://github.com/ioanniskemerlis/FFA/tree/main/images/folder.PNG "Folder Screenshot")
+![Folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/folder.PNG?raw=true "Folder Screenshot")
 
 Clone the repository:
 ![Clone the repository Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/clone.PNG?raw=true "Clone the repository Screenshot")
+```bash
 git clone https://github.com/ioanniskemerlis/FFA.git
+```
 
 Navigate to project folder
-![Navigate to folder Screenshot](images/navigate.png "Navigate to folder Screenshot")
+![Navigate to folder Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate.png?raw=true "Navigate to folder Screenshot")
+```bash
 cd FFA
+```
 
 2. Backend Setup
 Navigate to the backend folder:
-![Navigate to backend Screenshot](images/navigate2.png "Navigate to backend Screenshot")
+![Navigate to backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/navigate2.png?raw=true "Navigate to backend Screenshot")
+```bash
 cd backend
+```
 
 Build the backend:
 If Gradle is installed:
 
-![Building the backend Screenshot](images/gbuild.png "Building the backend Screenshot")
+![Building the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/gbuild.PNG?raw=true "Building the backend Screenshot")
+```bash
 gradle build
+```
 Using the Gradle wrapper:
 
 
 Run the backend:
-![Running the backend Screenshot](images/grun.png "Running the backend Screenshot")
+![Running the backend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun.png?raw=true "Running the backend Screenshot")
+```bash
 gradle bootRun
+```
 
 If everything is correct, you should see: 
-![Running the backend result Screenshot](images/grun1.png "Running the backend result Screenshot")
+![Running the backend result Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/grun1.png?raw=true "Running the backend result Screenshot")
 
 Verify the backend:
 The backend runs by default at http://localhost:8080. Open your browser and navigate to:
@@ -54,16 +64,22 @@ Swagger API documentation: http://localhost:8080/swagger-ui/index.html
 
 3. Frontend Setup
 Navigate to frontend folder
+```bash
 cd ../frontend
+```
 
 Install dependencies:
-![Install dependencies Screenshot](images/installdep.png "Install dependencies Screenshot")
+![Install dependencies Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/installdep.png?raw=true "Install dependencies Screenshot")
+```bash
 npm install
+```
 
 
 Serve the frontend locally:
-![Serving the frontend Screenshot](images/serve.png "Serving the frontend Screenshot")
+![Serving the frontend Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/serve.png?raw=true "Serving the frontend Screenshot")
+```bash
 ng serve
+```
 
 Verify the frontend:
 The Angular application runs by default at http://localhost:4200. Open your browser and navigate to it.
@@ -72,15 +88,20 @@ The Angular application runs by default at http://localhost:4200. Open your brow
 Testing Instructions
 
 Navigate to the backend folder:
-
+```bash
 cd backend
+```
 Run tests:
-![Tests Screenshot](images/tests.png "Tests Screenshot")
+![Tests Screenshot](https://github.com/ioanniskemerlis/FFA/blob/main/images/tests.png?raw=true "Tests Screenshot")
+```bash
 gradle test
+```
 
 The test results should be at build/reports/tests/test/index.html
 
+```bash
 gradle jacocotestreport
+```
 The test results should be at build/reports/jacoco/test/html/index.html
 
 
@@ -101,7 +122,9 @@ Deploy the JAR file to your hosting provider (e.g., AWS, Azure, Heroku) or a loc
 2. Frontend Deployment
 Build the production version of the Angular application:
 
+```bash
 ng build --prod
+```
 Deploy the contents of the dist/ folder to a static hosting service or a web server.
 
 
